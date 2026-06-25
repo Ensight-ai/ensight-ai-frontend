@@ -10,6 +10,7 @@ import {
   listConversations,
   qualifyLead,
 } from "@/lib/api";
+import { cleanAgentText } from "@/lib/text";
 import { AgentPicker, useAgentPicker } from "@/components/dashboard/agent-picker";
 
 export default function ConversationsPage() {
@@ -154,7 +155,7 @@ export default function ConversationsPage() {
                                 : "max-w-[85%] rounded-2xl rounded-bl-sm border border-border bg-surface px-3.5 py-2 text-sm text-fg/90"
                             }
                           >
-                            {m.content}
+                            {cleanAgentText(m.content)}
                           </p>
                         </div>
                       ))}

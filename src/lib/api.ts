@@ -397,4 +397,30 @@ export async function widgetChat(
   return res.json();
 }
 
+export interface WidgetVoiceResponse {
+  transcript: string;
+  answer: string;
+  audio_base64: string;
+  audio_mime: string;
+  language: string | null;
+}
+
+export async function widgetVoice(
+  sessionToken: string,
+  audio: Blob,
+  encoding = "WEBM_OPUS",
+): Promise<WidgetVoiceResponse> {
+  const form = new FormData();
+  form.append("file", audio, "audio.webm");
+  form.append("encoding", encoding);
+  const res = await fetch(`${API_URL}/voice`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${sessionToken}` },
+    body: form,
+  });
+  if (res.status === 401) throw new AuthError("Session expired");
+  if (!res.ok) throw new Error(await readError(res));
+  return res.json();
+}
+
 export type { Plan, UserProfile };

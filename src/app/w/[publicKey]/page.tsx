@@ -8,12 +8,21 @@ export default async function WidgetPage({
   searchParams,
 }: {
   params: Promise<{ publicKey: string }>;
-  searchParams: Promise<{ color?: string; name?: string; position?: string }>;
+  searchParams: Promise<{
+    color?: string;
+    name?: string;
+    position?: string;
+    capability?: string;
+  }>;
 }) {
   const { publicKey } = await params;
   const sp = await searchParams;
   const position =
     sp.position === "bottom-left" ? "bottom-left" : "bottom-right";
+  const capability =
+    sp.capability === "voice" || sp.capability === "both"
+      ? sp.capability
+      : "chat";
 
   return (
     <main className="min-h-screen bg-transparent">
@@ -22,6 +31,7 @@ export default async function WidgetPage({
         name={sp.name || "Assistant"}
         color={sp.color || "#2563eb"}
         position={position}
+        capability={capability}
       />
     </main>
   );

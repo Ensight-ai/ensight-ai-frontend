@@ -21,7 +21,7 @@ export default function AgentsPage() {
   const [error, setError] = useState<string | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [embedFor, setEmbedFor] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<Record<string, string>>({});
 
@@ -77,19 +77,29 @@ export default function AgentsPage() {
       color: agent.background_color,
       name: agent.name,
       position: agent.position,
+      capability: agent.capability,
     });
     return `${origin}/w/${agent.public_key}?${q.toString()}`;
   }
 
   function embedSnippet(agent: Agent) {
     const sidePin = agent.position === "bottom-left" ? "left:0" : "right:0";
-    return `<iframe src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:420px;height:600px;border:0;background:transparent;z-index:2147483647" allow="clipboard-write"></iframe>`;
+    // Voice agents need microphone permission inside the iframe.
+    const allow =
+      agent.capability === "chat"
+        ? "clipboard-write"
+        : "microphone; clipboard-write";
+    return `<iframe src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:420px;height:600px;border:0;background:transparent;z-index:2147483647" allow="${allow}"></iframe>`;
   }
 
   async function copyEmbed(agent: Agent) {
-    await navigator.clipboard.writeText(embedSnippet(agent));
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+    try {
+      await navigator.clipboard.writeText(embedSnippet(agent));
+      setCopiedId(agent.id);
+      setTimeout(() => setCopiedId((id) => (id === agent.id ? null : id)), 1500);
+    } catch {
+      setError("Couldn't copy — select the code and copy manually.");
+    }
   }
 
   return (
@@ -215,15 +225,23 @@ export default function AgentsPage() {
 
               {embedFor === agent.id && (
                 <div className="mt-3 animate-fade-in">
-                  <pre className="overflow-x-auto rounded-lg bg-slate-900 p-3 text-xs leading-relaxed text-slate-200">
-                    {embedSnippet(agent)}
-                  </pre>
-                  <button
-                    onClick={() => copyEmbed(agent)}
-                    className="mt-2 rounded-lg border border-border px-3 py-1.5 text-xs font-medium transition-colors hover:bg-bg-soft"
-                  >
-                    {copied ? "Copied!" : "Copy code"}
-                  </button>
+                  <div className="relative">
+                    <pre className="overflow-x-auto whitespace-pre-wrap break-all rounded-lg bg-slate-900 p-3 pr-20 text-xs leading-relaxed text-slate-200">
+                      <code>{embedSnippet(agent)}</code>
+                    </pre>
+                    <button
+                      onClick={() => copyEmbed(agent)}
+                      className="absolute right-2 top-2 rounded-md bg-white/10 px-2.5 py-1 text-xs font-medium text-white backdrop-blur transition-colors hover:bg-white/20"
+                    >
+                      {copiedId === agent.id ? "Copied!" : "Copy"}
+                    </button>
+                  </div>
+                  <p className="mt-2 text-xs text-muted">
+                    Paste this into your website&apos;s HTML, just before
+                    {" "}<code className="rounded bg-bg-soft px-1">&lt;/body&gt;</code>.
+                    {agent.capability !== "chat" &&
+                      " Visitors will be asked to allow microphone access for voice."}
+                  </p>
                 </div>
               )}
             </li>
