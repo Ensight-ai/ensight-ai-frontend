@@ -38,6 +38,14 @@ export function getUser(): UserProfile | null {
   return raw ? (JSON.parse(raw) as UserProfile) : null;
 }
 
+/** Update just the plan on the stored user (after a successful payment). */
+export function updateStoredPlan(plan: Plan): void {
+  if (typeof window === "undefined") return;
+  const user = getUser();
+  if (!user) return;
+  localStorage.setItem(USER_KEY, JSON.stringify({ ...user, plan }));
+}
+
 export function clearSession(): void {
   if (typeof window === "undefined") return;
   localStorage.removeItem(TOKEN_KEY);

@@ -96,6 +96,15 @@ export function BankIcon(props: IconProps) {
   );
 }
 
+export function CardIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <rect x="2" y="5" width="20" height="14" rx="2.5" />
+      <path d="M2 10h20M6 15h4" />
+    </svg>
+  );
+}
+
 export function GridIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>

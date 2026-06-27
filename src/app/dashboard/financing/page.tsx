@@ -81,7 +81,7 @@ export default function FinancingPage() {
     <div>
       <h1 className="text-2xl font-semibold tracking-tight">Financial access</h1>
       <p className="mt-1 text-sm text-muted">
-        ensightLabs already knows your business. Turn that activity into a
+        EnsightLabs already knows your business. Turn that activity into a
         loan-readiness assessment and a lender-ready application — no paperwork
         from scratch.
       </p>
@@ -94,7 +94,7 @@ export default function FinancingPage() {
 
       {/* Snapshot */}
       <h2 className="mt-8 text-sm font-semibold text-muted">
-        What ensightLabs already sees
+        What EnsightLabs already sees
       </h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-4">
         {(snapshot ? stats : [0, 1, 2, 3]).map((s, i) => (

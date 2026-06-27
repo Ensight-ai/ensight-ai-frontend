@@ -21,7 +21,7 @@ const features = [
   {
     icon: DocIcon,
     title: "Train on your docs",
-    body: "Upload PDFs, docs and pages. ensightLabs indexes them so answers stay grounded in your real content.",
+    body: "Upload PDFs, docs and pages. EnsightLabs indexes them so answers stay grounded in your real content.",
   },
   {
     icon: EmbedIcon,
@@ -45,11 +45,12 @@ export function Features() {
     <section id="features" className="mx-auto max-w-6xl px-5 py-24">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Everything you need to put AI on your site
+          Everything you need to answer, convert, and grow
         </h2>
         <p className="mt-4 text-muted">
-          From knowledge to deployment to insight — ensightLabs handles the whole
-          loop so you can focus on your customers.
+          EnsightLabs is more than a chatbot. It answers your visitors, turns
+          them into leads and booked meetings, writes your content, and helps
+          you access financing — one platform, your whole front office.
         </p>
       </div>
 

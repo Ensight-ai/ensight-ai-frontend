@@ -23,7 +23,7 @@ export function AuthLayout({
       <div className="flex flex-col px-5 py-8 sm:px-10">
         <Link href="/" className="flex items-center gap-2">
           <Logo className="h-7 w-7" />
-          <span className="text-lg font-semibold tracking-tight">ensightLabs</span>
+          <span className="text-lg font-semibold tracking-tight">EnsightLabs</span>
         </Link>
 
         <div className="flex flex-1 items-center justify-center py-10">

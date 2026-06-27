@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowIcon, BankIcon, CheckIcon } from "./icons";
 
 const points = [
-  "Built from your real ensightLabs activity — no paperwork from scratch",
+  "Built from your real EnsightLabs activity — no paperwork from scratch",
   "Financing options matched to your business",
   "A lender-ready application summary in one click",
 ];
@@ -60,7 +60,7 @@ export function FinancingShowcase() {
           </h2>
           <p className="mt-4 max-w-md text-muted">
             Many small businesses can&apos;t get a loan because they lack formal
-            records. But ensightLabs already knows your business — so it turns that
+            records. But EnsightLabs already knows your business — so it turns that
             activity into a loan-readiness profile and a lender-ready
             application, even without a long credit history.
           </p>

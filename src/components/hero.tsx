@@ -12,12 +12,12 @@ export function Hero() {
         <div className="animate-fade-up">
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1 text-xs text-muted">
             <SparkIcon className="h-3.5 w-3.5 text-brand-accent" />
-            Chat &amp; voice AI, trained on your content
+            More than a chatbot — your AI growth platform
           </span>
 
           <h1 className="mt-6 text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="text-gradient">AI agents</span> that know
-            <br className="hidden sm:block" /> your business by heart.
+            <span className="text-gradient">AI</span> that answers, converts
+            <br className="hidden sm:block" /> and grows your business.
           </h1>
 
           <p className="mt-6 max-w-md text-lg text-muted">
@@ -32,7 +32,7 @@ export function Hero() {
               href="/signup"
               className="group inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 text-sm font-medium text-white shadow-lg shadow-brand/30 transition-colors hover:bg-brand-soft"
             >
-              Build your agent
+              Get started
               <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <a
@@ -44,7 +44,7 @@ export function Hero() {
           </div>
 
           <p className="mt-5 text-xs text-muted">
-            No credit card required · Free Starter plan
+            No card to sign up · Cancel anytime
           </p>
         </div>
 

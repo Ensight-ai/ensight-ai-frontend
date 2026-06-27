@@ -322,6 +322,21 @@ export function assessFinancing(intake: FinancingIntake) {
   });
 }
 
+// --- Billing (Paystack) ----------------------------------------------------
+
+export function startCheckout(plan: Plan) {
+  return authed<{ authorization_url: string; reference: string }>(
+    "/billing/checkout",
+    { method: "POST", body: JSON.stringify({ plan }) },
+  );
+}
+
+export function verifyPayment(reference: string) {
+  return authed<{ status: string; plan: Plan | null }>(
+    `/billing/verify/${reference}`,
+  );
+}
+
 // --- Leads (lead spotter) --------------------------------------------------
 
 export type LeadStatus = "hot" | "warm" | "cold" | "unqualified";

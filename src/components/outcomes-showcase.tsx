@@ -118,7 +118,7 @@ const cards = [
   {
     icon: TargetIcon,
     title: "Spot your best sales leads",
-    body: "Every visitor chat is read and scored automatically. ensightLabs tells you who's ready to buy — with their intent and any contact details they shared — so you follow up with the right people first.",
+    body: "Every visitor chat is read and scored automatically. EnsightLabs tells you who's ready to buy — with their intent and any contact details they shared — so you follow up with the right people first.",
     points: ["Hot / warm / cold scoring", "Filter to just the good ones", "Only real details, never invented"],
     mockup: <LeadsMockup />,
   },
@@ -132,7 +132,7 @@ const cards = [
   {
     icon: PenIcon,
     title: "Draft your marketing copy",
-    body: "Need a product description, email, or post? Describe it and ensightLabs writes a first draft using what it already knows about your business — ready for you to tweak and copy out.",
+    body: "Need a product description, email, or post? Describe it and EnsightLabs writes a first draft using what it already knows about your business — ready for you to tweak and copy out.",
     points: ["Blog posts, emails, captions & more", "Grounded in your own documents", "Edit, approve, and reuse"],
     mockup: <DraftMockup />,
   },

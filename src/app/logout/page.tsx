@@ -17,7 +17,7 @@ export default function LogoutPage() {
         You&apos;ve been signed out
       </h1>
       <p className="mt-2 text-sm text-muted">
-        Thanks for using ensightLabs. See you again soon.
+        Thanks for using EnsightLabs. See you again soon.
       </p>
       <div className="mt-8 flex items-center gap-3">
         <Link
