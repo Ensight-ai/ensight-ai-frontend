@@ -99,7 +99,7 @@ const sections: { heading: string; body: string[] }[] = [
   {
     heading: "15. Contact",
     body: [
-      "Questions about these Terms? Reach us at hello@ensightlabs.com.",
+      "Questions about these Terms? Reach us at hello@ensightlabs.xyz.",
     ],
   },
 ];

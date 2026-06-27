@@ -68,7 +68,7 @@ export function HowItWorks() {
                 {"\n  "}
                 <span className="text-brand-accent">src</span>
                 <span className="text-slate-400">=</span>
-                <span className="text-emerald-300">{'"https://cdn.ensightlabs.com/widget.js"'}</span>
+                <span className="text-emerald-300">{'"https://cdn.ensightlabs.xyz/widget.js"'}</span>
                 {"\n  "}
                 <span className="text-brand-accent">data-agent</span>
                 <span className="text-slate-400">=</span>

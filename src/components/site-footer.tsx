@@ -14,7 +14,7 @@ const columns = [
     title: "Company",
     links: [
       { href: "/about", label: "About" },
-      { href: "mailto:hello@ensightlabs.com", label: "Contact" },
+      { href: "mailto:hello@ensightlabs.xyz", label: "Contact" },
     ],
   },
   {

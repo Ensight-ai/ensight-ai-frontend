@@ -1,7 +1,7 @@
 // Canonical site identity, used for SEO metadata, sitemap and robots.
 // Override the URL per environment with NEXT_PUBLIC_SITE_URL.
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ensightlabs.com"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ensightlabs.xyz"
 ).replace(/\/$/, "");
 
 export const SITE_NAME = "EnsightLabs";
