@@ -1,5 +1,6 @@
 import { CTA } from "@/components/cta";
 import { Features } from "@/components/features";
+import { FinancingShowcase } from "@/components/financing-showcase";
 import { Hero } from "@/components/hero";
 import { HowItWorks } from "@/components/how-it-works";
 import { OutcomesShowcase } from "@/components/outcomes-showcase";
@@ -15,6 +16,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <Features />
+        <FinancingShowcase />
         <VoiceShowcase />
         <OutcomesShowcase />
         <HowItWorks />

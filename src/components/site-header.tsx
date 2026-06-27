@@ -13,7 +13,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link href="/" className="flex items-center gap-2">
           <Logo className="h-7 w-7" />
-          <span className="text-lg font-semibold tracking-tight">ensight</span>
+          <span className="text-lg font-semibold tracking-tight">ensightLabs</span>
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

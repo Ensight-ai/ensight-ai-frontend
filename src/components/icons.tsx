@@ -88,6 +88,14 @@ export function TargetIcon(props: IconProps) {
   );
 }
 
+export function BankIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M3 10 12 4l9 6M4 10v8M20 10v8M8 10v8M16 10v8M3 18h18M2 21h20" />
+    </svg>
+  );
+}
+
 export function GridIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>

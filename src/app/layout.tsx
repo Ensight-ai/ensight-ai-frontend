@@ -13,11 +13,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ensight — AI agents for your website",
+  title: "ensightLabs — AI agents for your website",
   description:
     "Build custom AI chat & voice agents trained on your own content, then embed them on any website in minutes. Answer visitors instantly, in any language.",
   openGraph: {
-    title: "ensight — AI agents for your website",
+    title: "ensightLabs — AI agents for your website",
     description:
       "Custom AI chat & voice agents trained on your content. Embed anywhere in minutes.",
     type: "website",

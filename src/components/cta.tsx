@@ -10,7 +10,7 @@ export function CTA() {
           Give your visitors an answer, not a contact form.
         </h2>
         <p className="mx-auto mt-4 max-w-md text-muted">
-          Spin up your first ensight agent today — free, no credit card, live in
+          Spin up your first ensightLabs agent today — free, no credit card, live in
           minutes.
         </p>
         <Link

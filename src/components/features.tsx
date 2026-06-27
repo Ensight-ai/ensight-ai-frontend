@@ -21,7 +21,7 @@ const features = [
   {
     icon: DocIcon,
     title: "Train on your docs",
-    body: "Upload PDFs, docs and pages. ensight indexes them so answers stay grounded in your real content.",
+    body: "Upload PDFs, docs and pages. ensightLabs indexes them so answers stay grounded in your real content.",
   },
   {
     icon: EmbedIcon,
@@ -48,7 +48,7 @@ export function Features() {
           Everything you need to put AI on your site
         </h2>
         <p className="mt-4 text-muted">
-          From knowledge to deployment to insight — ensight handles the whole
+          From knowledge to deployment to insight — ensightLabs handles the whole
           loop so you can focus on your customers.
         </p>
       </div>

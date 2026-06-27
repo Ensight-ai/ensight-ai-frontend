@@ -34,7 +34,7 @@ export function SiteFooter() {
         <div>
           <Link href="/" className="flex items-center gap-2">
             <Logo className="h-7 w-7" />
-            <span className="text-lg font-semibold tracking-tight">ensight</span>
+            <span className="text-lg font-semibold tracking-tight">ensightLabs</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm text-muted">
             Custom AI chat &amp; voice agents for your website, trained on your
@@ -63,7 +63,7 @@ export function SiteFooter() {
 
       <div className="border-t border-border/60">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-6 text-xs text-muted sm:flex-row">
-          <p>© {new Date().getFullYear()} ensight. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} ensightLabs. All rights reserved.</p>
           <p>Built for the web.</p>
         </div>
       </div>

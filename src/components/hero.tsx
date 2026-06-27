@@ -23,8 +23,8 @@ export function Hero() {
           <p className="mt-6 max-w-md text-lg text-muted">
             Build a custom chat or voice agent, train it on your own documents,
             and embed it on any website in minutes. It answers every visitor,
-            spots your best sales leads, books meetings on your calendar, and
-            drafts your marketing copy.
+            spots your best sales leads, books meetings, drafts your marketing
+            copy — and even helps you access financing.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">

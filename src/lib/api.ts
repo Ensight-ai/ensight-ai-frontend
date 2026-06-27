@@ -262,6 +262,66 @@ export function listBookings(agentId: string) {
   return authed<Page<Booking>>(`/agents/${agentId}/bookings?limit=100`);
 }
 
+// --- Financing (financial access) ------------------------------------------
+
+export interface BusinessSnapshot {
+  agents: number;
+  conversations: number;
+  unique_visitors: number;
+  qualified_leads: number;
+  hot_leads: number;
+  meetings_booked: number;
+  content_pieces: number;
+  first_activity: string | null;
+  last_activity: string | null;
+  demand_signals: string[];
+}
+
+export interface FinancingProduct {
+  name: string;
+  description: string;
+  why_fit: string;
+  typical_amount: string | null;
+  likelihood: "high" | "medium" | "low";
+}
+
+export interface LoanReadinessAssessment {
+  readiness_score: number;
+  tier: string;
+  strengths: string[];
+  gaps: string[];
+  recommended_products: FinancingProduct[];
+  application_summary: string;
+  next_steps: string[];
+}
+
+export interface FinancingIntake {
+  monthly_revenue?: number | null;
+  currency?: string;
+  time_in_business_months?: number | null;
+  employees?: number | null;
+  amount_sought?: number | null;
+  purpose?: string | null;
+  country?: string | null;
+}
+
+export interface FinancingResult {
+  snapshot: BusinessSnapshot;
+  intake: FinancingIntake;
+  assessment: LoanReadinessAssessment;
+}
+
+export function getBusinessSnapshot() {
+  return authed<BusinessSnapshot>("/financing/snapshot");
+}
+
+export function assessFinancing(intake: FinancingIntake) {
+  return authed<FinancingResult>("/financing/assess", {
+    method: "POST",
+    body: JSON.stringify(intake),
+  });
+}
+
 // --- Leads (lead spotter) --------------------------------------------------
 
 export type LeadStatus = "hot" | "warm" | "cold" | "unqualified";

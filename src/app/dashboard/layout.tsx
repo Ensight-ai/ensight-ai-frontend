@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/logo";
 import {
+  BankIcon,
   BotIcon,
   CalendarIcon,
   ChartIcon,
@@ -25,6 +26,7 @@ const nav: { href: string; label: string; icon: Icon }[] = [
   { href: "/dashboard/leads", label: "Leads", icon: TargetIcon },
   { href: "/dashboard/bookings", label: "Bookings", icon: CalendarIcon },
   { href: "/dashboard/content", label: "Content", icon: PenIcon },
+  { href: "/dashboard/financing", label: "Financing", icon: BankIcon },
   { href: "/dashboard/analytics", label: "Analytics", icon: ChartIcon },
   { href: "/dashboard/settings", label: "Settings", icon: GearIcon },
 ];
@@ -67,7 +69,7 @@ export default function DashboardLayout({
       <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col border-r border-border bg-bg px-3 py-5">
         <Link href="/" className="flex items-center gap-2 px-2">
           <Logo className="h-7 w-7" />
-          <span className="text-lg font-semibold tracking-tight">ensight</span>
+          <span className="text-lg font-semibold tracking-tight">ensightLabs</span>
         </Link>
 
         <nav className="mt-8 flex flex-1 flex-col gap-1">

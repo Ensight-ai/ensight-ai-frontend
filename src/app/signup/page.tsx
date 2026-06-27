@@ -5,7 +5,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 import { GoogleButton } from "@/components/auth/google-button";
 
 export const metadata: Metadata = {
-  title: "Sign up · ensight",
+  title: "Sign up · ensightLabs",
 };
 
 export default function SignupPage() {

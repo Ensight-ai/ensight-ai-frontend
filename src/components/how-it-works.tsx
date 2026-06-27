@@ -7,7 +7,7 @@ const steps = [
   {
     n: "02",
     title: "Upload your knowledge",
-    body: "Add your documents. ensight chunks and indexes them into a private knowledge base.",
+    body: "Add your documents. ensightLabs chunks and indexes them into a private knowledge base.",
   },
   {
     n: "03",
@@ -62,13 +62,13 @@ export function HowItWorks() {
             </div>
             <pre className="overflow-x-auto rounded-xl bg-slate-950 p-5 font-mono text-[13px] leading-relaxed text-slate-200">
               <code>
-                <span className="text-muted">{"<!-- Add ensight to your site -->"}</span>
+                <span className="text-muted">{"<!-- Add ensightLabs to your site -->"}</span>
                 {"\n"}
                 <span className="text-slate-500">{"<script"}</span>
                 {"\n  "}
                 <span className="text-brand-accent">src</span>
                 <span className="text-slate-400">=</span>
-                <span className="text-emerald-300">{'"https://cdn.ensight.ai/widget.js"'}</span>
+                <span className="text-emerald-300">{'"https://cdn.ensightlabs.com/widget.js"'}</span>
                 {"\n  "}
                 <span className="text-brand-accent">data-agent</span>
                 <span className="text-slate-400">=</span>
