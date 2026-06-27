@@ -100,9 +100,9 @@ function BookingMockup() {
       <div className="rounded-lg border border-border bg-bg-soft px-3 py-2.5">
         <p className="text-sm font-medium">Intro call · 30 min</p>
         <p className="mt-0.5 text-xs text-muted">Tue, Jul 1 · 2:00 PM</p>
-        <div className="mt-2 flex items-center gap-1.5 text-[11px] text-brand">
-          <CalendarIcon className="h-3.5 w-3.5" />
-          meet.google.com/abc-defg-hij
+        <div className="mt-2 flex min-w-0 items-center gap-1.5 text-[11px] text-brand">
+          <CalendarIcon className="h-3.5 w-3.5 shrink-0" />
+          <span className="truncate">meet.google.com/abc-defg-hij</span>
         </div>
       </div>
       <p className="mt-3 text-[11px] text-muted">
@@ -156,7 +156,7 @@ export function OutcomesShowcase() {
         {cards.map((c) => (
           <div
             key={c.title}
-            className="rounded-2xl border border-border bg-surface/50 p-6 shadow-sm shadow-slate-200/50 sm:p-8"
+            className="min-w-0 rounded-2xl border border-border bg-surface/50 p-6 shadow-sm shadow-slate-200/50 sm:p-8"
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-accent">
               <c.icon className="h-5 w-5" />

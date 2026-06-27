@@ -53,7 +53,7 @@ export function HowItWorks() {
             </ol>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-1.5 shadow-2xl shadow-brand/20">
+          <div className="min-w-0 rounded-2xl border border-slate-800 bg-slate-900 p-1.5 shadow-2xl shadow-brand/20">
             <div className="flex items-center gap-1.5 px-3 py-2.5">
               <span className="h-3 w-3 rounded-full bg-red-400/70" />
               <span className="h-3 w-3 rounded-full bg-yellow-400/70" />
