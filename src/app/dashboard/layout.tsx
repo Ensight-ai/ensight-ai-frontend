@@ -16,7 +16,14 @@ import {
   PenIcon,
   TargetIcon,
 } from "@/components/icons";
-import { getToken, getUser } from "@/lib/auth";
+import { AuthError, getMe } from "@/lib/api";
+import {
+  clearSession,
+  getToken,
+  getUser,
+  isPaidPlan,
+  updateStoredPlan,
+} from "@/lib/auth";
 
 type Icon = ComponentType<SVGProps<SVGSVGElement>>;
 
@@ -45,12 +52,37 @@ export default function DashboardLayout({
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!getToken()) {
+    const token = getToken();
+    if (!token) {
       router.replace("/login");
       return;
     }
-    setEmail(getUser()?.email ?? null);
-    setReady(true);
+    // Verify the live plan: only paid users get in; the rest hit the paywall.
+    getMe(token)
+      .then((profile) => {
+        updateStoredPlan(profile.plan);
+        setEmail(profile.email);
+        if (!isPaidPlan(profile.plan)) {
+          router.replace("/choose-plan");
+          return;
+        }
+        setReady(true);
+      })
+      .catch((e) => {
+        if (e instanceof AuthError) {
+          clearSession();
+          router.replace("/login");
+          return;
+        }
+        // Backend unreachable — fall back to the stored plan.
+        const user = getUser();
+        if (!isPaidPlan(user?.plan)) {
+          router.replace("/choose-plan");
+          return;
+        }
+        setEmail(user?.email ?? null);
+        setReady(true);
+      });
   }, [router]);
 
   // Close the mobile drawer whenever the route changes.

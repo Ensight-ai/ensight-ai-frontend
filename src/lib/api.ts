@@ -56,6 +56,7 @@ export async function getMe(token: string): Promise<UserProfile> {
   const res = await fetch(`${API_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
+  if (res.status === 401) throw new AuthError("Session expired");
   if (!res.ok) throw new Error(await readError(res));
   return res.json() as Promise<UserProfile>;
 }

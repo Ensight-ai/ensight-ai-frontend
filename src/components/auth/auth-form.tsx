@@ -3,11 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, signup } from "@/lib/api";
-import { saveSession } from "@/lib/auth";
+import { isPaidPlan, saveSession, type Plan } from "@/lib/auth";
 
 type Mode = "login" | "signup";
 
-const REDIRECT_TO = "/dashboard"; // Land in the dashboard once signed in.
+// Paid users go to the dashboard; anyone without an active plan must choose &
+// pay for one first (hard paywall).
+function destinationFor(plan: Plan): string {
+  return isPaidPlan(plan) ? "/dashboard" : "/choose-plan";
+}
 
 export function AuthForm({ mode }: { mode: Mode }) {
   const router = useRouter();
@@ -43,7 +47,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
         const res = await signup(email, password);
         if (res.access_token) {
           saveSession(res.access_token, res.refresh_token, res.user);
-          router.push(REDIRECT_TO);
+          router.push(destinationFor(res.user.plan));
         } else {
           // Email confirmation required before a session is issued.
           setNotice(res.message || "Account created — please sign in.");
@@ -52,7 +56,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
       } else {
         const res = await login(email, password);
         saveSession(res.access_token, res.refresh_token, res.user);
-        router.push(REDIRECT_TO);
+        router.push(destinationFor(res.user.plan));
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { getMe } from "@/lib/api";
-import { saveSession, type UserProfile } from "@/lib/auth";
+import { isPaidPlan, saveSession, type UserProfile } from "@/lib/auth";
 
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -35,11 +35,12 @@ export default function AuthCallbackPage() {
         profile = {
           id: session.user.id,
           email: session.user.email ?? "",
-          plan: "starter",
+          plan: "inactive",
         };
       }
       saveSession(token, session.refresh_token ?? null, profile);
-      router.replace("/");
+      // Paid users go to the dashboard; everyone else must choose a plan first.
+      router.replace(isPaidPlan(profile.plan) ? "/dashboard" : "/choose-plan");
     }
 
     // The SDK exchanges the OAuth code automatically (detectSessionInUrl).

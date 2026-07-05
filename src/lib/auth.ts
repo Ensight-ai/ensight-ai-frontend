@@ -4,7 +4,12 @@
 // FastAPI backend; Google OAuth tokens come from the Supabase SDK. Both are
 // Supabase access tokens that the backend's get_current_user accepts.
 
-export type Plan = "starter" | "beta" | "pro";
+export type Plan = "inactive" | "starter" | "beta" | "pro";
+
+/** Whether a plan grants product access (i.e. the user has paid). */
+export function isPaidPlan(plan: Plan | string | null | undefined): boolean {
+  return plan === "starter" || plan === "beta" || plan === "pro";
+}
 
 export interface UserProfile {
   id: string;

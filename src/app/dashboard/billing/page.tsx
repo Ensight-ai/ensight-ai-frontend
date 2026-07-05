@@ -57,7 +57,7 @@ const plans: {
   },
 ];
 
-const order: Record<Plan, number> = { starter: 0, beta: 1, pro: 2 };
+const order: Record<Plan, number> = { inactive: -1, starter: 0, beta: 1, pro: 2 };
 
 export default function BillingPage() {
   const router = useRouter();
