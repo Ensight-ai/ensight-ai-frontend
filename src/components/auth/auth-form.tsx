@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { login, signup } from "@/lib/api";
+import { login, resendVerification, signup } from "@/lib/api";
 import { isPaidPlan, saveSession, type Plan } from "@/lib/auth";
 
 type Mode = "login" | "signup";
@@ -22,8 +22,22 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [resent, setResent] = useState(false);
+  const [resending, setResending] = useState(false);
 
   const isSignup = mode === "signup";
+
+  async function handleResend() {
+    setResending(true);
+    try {
+      await resendVerification(email);
+      setResent(true);
+    } catch {
+      /* generic response; ignore */
+    } finally {
+      setResending(false);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -131,22 +145,32 @@ export function AuthForm({ mode }: { mode: Mode }) {
         </p>
       )}
       {notice && (
-        <p className="rounded-lg bg-blue-50 px-3 py-2 text-sm text-brand">
-          {notice}
-        </p>
+        <div className="rounded-lg bg-blue-50 px-3 py-2.5 text-sm text-brand">
+          <p>{notice}</p>
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={resending || resent}
+            className="mt-2 font-medium underline underline-offset-2 disabled:no-underline disabled:opacity-70"
+          >
+            {resent
+              ? "Verification email re-sent"
+              : resending
+                ? "Sending…"
+                : "Didn't get it? Resend email"}
+          </button>
+        </div>
       )}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand/25 transition-colors hover:bg-brand-soft disabled:opacity-60"
-      >
-        {loading
-          ? "Please wait…"
-          : isSignup
-            ? "Create account"
-            : "Sign in"}
-      </button>
+      {!notice && (
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand/25 transition-colors hover:bg-brand-soft disabled:opacity-60"
+        >
+          {loading ? "Please wait…" : isSignup ? "Create account" : "Sign in"}
+        </button>
+      )}
     </form>
   );
 }

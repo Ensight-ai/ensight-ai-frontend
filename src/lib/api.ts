@@ -52,6 +52,22 @@ export function login(email: string, password: string) {
   return post<AuthResponse>("/auth/login", { email, password });
 }
 
+export function verifyEmail(token: string) {
+  return post<{ message: string }>("/auth/verify-email", { token });
+}
+
+export function resendVerification(email: string) {
+  return post<{ message: string }>("/auth/resend-verification", { email });
+}
+
+export function forgotPassword(email: string) {
+  return post<{ message: string }>("/auth/forgot-password", { email });
+}
+
+export function resetPassword(token: string, password: string) {
+  return post<{ message: string }>("/auth/reset-password", { token, password });
+}
+
 export async function getMe(token: string): Promise<UserProfile> {
   const res = await fetch(`${API_URL}/auth/me`, {
     headers: { Authorization: `Bearer ${token}` },

@@ -25,7 +25,16 @@ export default function LoginPage() {
 
       <AuthForm mode="login" />
 
-      <p className="mt-6 text-center text-sm text-muted">
+      <p className="mt-4 text-center text-sm">
+        <Link
+          href="/forgot-password"
+          className="font-medium text-brand hover:underline"
+        >
+          Forgot your password?
+        </Link>
+      </p>
+
+      <p className="mt-4 text-center text-sm text-muted">
         Don&apos;t have an account?{" "}
         <Link href="/signup" className="font-medium text-brand hover:underline">
           Sign up
