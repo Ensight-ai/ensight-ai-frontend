@@ -354,6 +354,91 @@ export function verifyPayment(reference: string) {
   );
 }
 
+// --- Admin (founder metrics) -----------------------------------------------
+
+export interface AdminUserRow {
+  email: string;
+  plan: string;
+  agents: number;
+  created_at: string | null;
+}
+
+export interface AdminMetrics {
+  total_signups: number;
+  paid_users: number;
+  active_users_30d: number;
+  plan_breakdown: Record<string, number>;
+  total_agents: number;
+  total_conversations: number;
+  total_leads: number;
+  total_bookings: number;
+  estimated_mrr: number;
+  revenue_collected: number | null;
+  total_transactions: number | null;
+  recent_users: AdminUserRow[];
+}
+
+export function getAdminMetrics() {
+  return authed<AdminMetrics>("/admin/metrics");
+}
+
+/** Cheap check used to gate the admin area (403 if not an admin). */
+export function checkAdminAccess() {
+  return authed<{ ok: boolean }>("/admin/access");
+}
+
+export interface AdminUserDetail {
+  id: string;
+  email: string;
+  plan: string;
+  agents: number;
+  created_at: string | null;
+}
+
+export function getAdminUsers(
+  params: { search?: string; limit?: number; offset?: number } = {},
+) {
+  const q = new URLSearchParams();
+  if (params.search) q.set("search", params.search);
+  q.set("limit", String(params.limit ?? 20));
+  q.set("offset", String(params.offset ?? 0));
+  return authed<Page<AdminUserDetail>>(`/admin/users?${q.toString()}`);
+}
+
+export function setUserPlan(userId: string, plan: Plan) {
+  return authed<AdminUserDetail>(`/admin/users/${userId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ plan }),
+  });
+}
+
+export function deleteUser(userId: string) {
+  return authed<void>(`/admin/users/${userId}`, { method: "DELETE" });
+}
+
+export interface AdminPayment {
+  reference: string;
+  email: string | null;
+  amount: number;
+  currency: string;
+  status: string;
+  channel: string | null;
+  paid_at: string | null;
+}
+
+export interface AdminPayments {
+  items: AdminPayment[];
+  total: number;
+  page: number;
+  per_page: number;
+}
+
+export function getAdminPayments(page = 1, perPage = 50) {
+  return authed<AdminPayments>(
+    `/admin/payments?page=${page}&per_page=${perPage}`,
+  );
+}
+
 // --- Leads (lead spotter) --------------------------------------------------
 
 export type LeadStatus = "hot" | "warm" | "cold" | "unqualified";
