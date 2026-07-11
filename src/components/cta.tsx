@@ -7,7 +7,7 @@ export function CTA() {
       <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-brand/20 via-surface to-bg-soft px-6 py-16 text-center sm:px-12">
         <div className="absolute left-1/2 top-0 -z-10 h-64 w-64 -translate-x-1/2 rounded-full bg-brand/30 blur-3xl" />
         <h2 className="mx-auto max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
-          Give your visitors an answer, not a contact form.
+          Ready to turn visitors into customers?
         </h2>
         <p className="mx-auto mt-4 max-w-md text-muted">
           Set up your AI growth platform today — no card to sign up, live in

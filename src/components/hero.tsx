@@ -21,10 +21,10 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-md text-lg text-muted">
-            Build a custom chat or voice agent, train it on your own documents,
-            and embed it on any website in minutes. It answers every visitor,
-            spots your best sales leads, books meetings, drafts your marketing
-            copy — and even helps you access financing.
+            Turn the visitors you already have into customers. EnsightLabs
+            answers every question, captures your best leads, books meetings,
+            writes your marketing, and even helps you access financing — powered
+            by a custom AI agent trained on your business, live in minutes.
           </p>
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
