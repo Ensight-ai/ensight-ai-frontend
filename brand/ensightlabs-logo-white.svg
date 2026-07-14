@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="100" viewBox="0 0 260 50" role="img" aria-label="EnsightLabs">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(2,2) scale(1.4375)">
+    <rect width="32" height="32" rx="9" fill="url(#g)"/>
+    <path d="M11 12.5h8M11 16h8M11 19.5h5" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="22" cy="19.5" r="1.6" fill="#bae6fd"/>
+  </g>
+  <text x="62" y="33" font-family="'Helvetica Neue',Arial,Helvetica,sans-serif" font-size="27" font-weight="700" letter-spacing="-0.5" fill="#ffffff">EnsightLabs</text>
+</svg>
