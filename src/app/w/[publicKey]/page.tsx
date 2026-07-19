@@ -13,6 +13,7 @@ export default async function WidgetPage({
     name?: string;
     position?: string;
     capability?: string;
+    greeting?: string;
   }>;
 }) {
   const { publicKey } = await params;
@@ -32,6 +33,7 @@ export default async function WidgetPage({
         color={sp.color || "#2563eb"}
         position={position}
         capability={capability}
+        greeting={sp.greeting}
       />
     </main>
   );

@@ -135,6 +135,7 @@ export interface Agent {
   capability: "chat" | "voice" | "both";
   background_color: string;
   position: "bottom-left" | "bottom-right";
+  greeting: string | null;
   booking_enabled: boolean;
   meeting_duration_minutes: number;
   public_key: string;
@@ -156,6 +157,7 @@ export interface AgentCreate {
   capability: "chat" | "voice" | "both";
   background_color: string;
   position: "bottom-left" | "bottom-right";
+  greeting?: string;
   booking_enabled: boolean;
   meeting_duration_minutes: number;
 }
@@ -176,6 +178,7 @@ export function updateAgent(
       | "capability"
       | "background_color"
       | "position"
+      | "greeting"
       | "booking_enabled"
       | "meeting_duration_minutes"
     >

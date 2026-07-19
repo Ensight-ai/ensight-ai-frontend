@@ -23,6 +23,7 @@ export default function AgentsPage() {
   const [embedFor, setEmbedFor] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [editing, setEditing] = useState<Agent | null>(null);
   const [uploadStatus, setUploadStatus] = useState<Record<string, string>>({});
 
   useEffect(() => {
@@ -79,6 +80,7 @@ export default function AgentsPage() {
       position: agent.position,
       capability: agent.capability,
     });
+    if (agent.greeting) q.set("greeting", agent.greeting);
     return `${origin}/w/${agent.public_key}?${q.toString()}`;
   }
 
@@ -162,11 +164,19 @@ export default function AgentsPage() {
                     </p>
                   </div>
                 </div>
-                <Toggle
-                  on={agent.booking_enabled}
-                  busy={savingId === agent.id}
-                  onChange={(on) => patch(agent, { booking_enabled: on })}
-                />
+                <div className="flex shrink-0 items-center gap-3">
+                  <button
+                    onClick={() => setEditing(agent)}
+                    className="rounded-lg border border-border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-bg-soft"
+                  >
+                    Edit
+                  </button>
+                  <Toggle
+                    on={agent.booking_enabled}
+                    busy={savingId === agent.id}
+                    onChange={(on) => patch(agent, { booking_enabled: on })}
+                  />
+                </div>
               </div>
 
               {agent.booking_enabled && (
@@ -250,11 +260,24 @@ export default function AgentsPage() {
       )}
 
       {showCreate && (
-        <CreateAgentModal
+        <AgentFormModal
           onClose={() => setShowCreate(false)}
-          onCreated={(agent) => {
+          onSaved={(agent) => {
             setAgents((prev) => [agent, ...(prev ?? [])]);
             setShowCreate(false);
+          }}
+        />
+      )}
+
+      {editing && (
+        <AgentFormModal
+          agent={editing}
+          onClose={() => setEditing(null)}
+          onSaved={(updated) => {
+            setAgents((prev) =>
+              prev?.map((a) => (a.id === updated.id ? updated : a)) ?? prev,
+            );
+            setEditing(null);
           }}
         />
       )}
@@ -317,20 +340,22 @@ function Toggle({
   );
 }
 
-function CreateAgentModal({
+function AgentFormModal({
+  agent,
   onClose,
-  onCreated,
+  onSaved,
 }: {
+  agent?: Agent;
   onClose: () => void;
-  onCreated: (agent: Agent) => void;
+  onSaved: (agent: Agent) => void;
 }) {
-  const [form, setForm] = useState<AgentCreate>({
-    name: "",
-    capability: "chat",
-    background_color: "#2563eb",
-    position: "bottom-right",
-    booking_enabled: false,
-    meeting_duration_minutes: 30,
+  const editing = !!agent;
+  const [form, setForm] = useState({
+    name: agent?.name ?? "",
+    capability: agent?.capability ?? "chat",
+    background_color: agent?.background_color ?? "#2563eb",
+    position: agent?.position ?? "bottom-right",
+    greeting: agent?.greeting ?? "",
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -341,10 +366,37 @@ function CreateAgentModal({
     setSaving(true);
     setError(null);
     try {
-      const agent = await createAgent(form);
-      onCreated(agent);
+      if (agent) {
+        // Only send fields the owner actually changed, so we don't re-trigger
+        // plan checks (e.g. capability) on an unchanged value.
+        const patch: Parameters<typeof updateAgent>[1] = {};
+        if (form.name !== agent.name) patch.name = form.name;
+        if (form.capability !== agent.capability)
+          patch.capability = form.capability;
+        if (form.background_color !== agent.background_color)
+          patch.background_color = form.background_color;
+        if (form.position !== agent.position) patch.position = form.position;
+        if (form.greeting !== (agent.greeting ?? ""))
+          patch.greeting = form.greeting;
+        const updated =
+          Object.keys(patch).length > 0
+            ? await updateAgent(agent.id, patch)
+            : agent;
+        onSaved(updated);
+      } else {
+        const payload: AgentCreate = {
+          name: form.name,
+          capability: form.capability,
+          background_color: form.background_color,
+          position: form.position,
+          greeting: form.greeting || undefined,
+          booking_enabled: false,
+          meeting_duration_minutes: 30,
+        };
+        onSaved(await createAgent(payload));
+      }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't create agent.");
+      setError(e instanceof Error ? e.message : "Couldn't save agent.");
       setSaving(false);
     }
   }
@@ -359,7 +411,9 @@ function CreateAgentModal({
         onSubmit={submit}
         className="relative w-full max-w-md animate-scale-in rounded-2xl border border-border bg-surface p-6 shadow-2xl"
       >
-        <h2 className="text-lg font-semibold">New agent</h2>
+        <h2 className="text-lg font-semibold">
+          {editing ? "Edit agent" : "New agent"}
+        </h2>
 
         <label className="mt-5 block text-sm">
           <span className="mb-1.5 block font-medium">Name</span>
@@ -408,6 +462,21 @@ function CreateAgentModal({
           </label>
         </div>
 
+        <label className="mt-4 block text-sm">
+          <span className="mb-1.5 block font-medium">
+            Welcome message{" "}
+            <span className="font-normal text-muted">(shown on open)</span>
+          </span>
+          <textarea
+            value={form.greeting}
+            maxLength={300}
+            rows={2}
+            onChange={(e) => setForm({ ...form, greeting: e.target.value })}
+            placeholder="Hi! 👋 How can we help you today?"
+            className="w-full resize-none rounded-lg border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-brand focus:ring-2 focus:ring-brand/20"
+          />
+        </label>
+
         <label className="mt-4 flex items-center gap-3 text-sm">
           <span className="font-medium">Widget color</span>
           <input
@@ -436,7 +505,11 @@ function CreateAgentModal({
             disabled={saving || !form.name.trim()}
             className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white shadow-lg shadow-brand/25 transition-colors hover:bg-brand-soft disabled:opacity-60"
           >
-            {saving ? "Creating…" : "Create agent"}
+            {saving
+              ? "Saving…"
+              : editing
+                ? "Save changes"
+                : "Create agent"}
           </button>
         </div>
       </form>

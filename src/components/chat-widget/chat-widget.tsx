@@ -18,7 +18,9 @@ interface Message {
   audio?: string; // data URL for a spoken bot answer
 }
 
-const GREETING = "Hi! 👋 How can we help you today?";
+const DEFAULT_GREETING = "Hi! 👋 How can we help you today?";
+// How long the "typing…" preloader shows before the greeting appears on open.
+const GREETING_DELAY_MS = 700;
 
 function visitorKey(publicKey: string) {
   return `ensight_visitor_${publicKey}`;
@@ -30,18 +32,23 @@ export function ChatWidget({
   color = "#2563eb",
   position = "bottom-right",
   capability = "chat",
+  greeting,
 }: {
   publicKey: string;
   name?: string;
   color?: string;
   position?: "bottom-left" | "bottom-right";
   capability?: Capability;
+  greeting?: string;
 }) {
+  const greetingText = greeting?.trim() || DEFAULT_GREETING;
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<WidgetSession | null>(null);
-  const [messages, setMessages] = useState<Message[]>([
-    { role: "bot", text: GREETING },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  // Show a brief "typing…" preloader, then the greeting, the first time the
+  // widget is opened — so it feels like a person starting the conversation.
+  const [greeted, setGreeted] = useState(false);
+  const [greetingTyping, setGreetingTyping] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [recording, setRecording] = useState(false);
@@ -55,7 +62,19 @@ export function ChatWidget({
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, sending, open]);
+  }, [messages, sending, greetingTyping, open]);
+
+  // First open: play the typing preloader, then reveal the greeting.
+  useEffect(() => {
+    if (!open || greeted) return;
+    setGreeted(true);
+    setGreetingTyping(true);
+    const timer = setTimeout(() => {
+      setMessages((m) => [{ role: "bot", text: greetingText }, ...m]);
+      setGreetingTyping(false);
+    }, GREETING_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [open, greeted, greetingText]);
 
   async function ensureSession(): Promise<WidgetSession> {
     if (session) return session;
@@ -229,9 +248,13 @@ export function ChatWidget({
                 </div>
               </div>
             ))}
-            {sending && (
+            {(sending || greetingTyping) && (
               <div className="flex justify-start">
-                <p className="rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-400">…</p>
+                <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-slate-200 bg-white px-3.5 py-3">
+                  <Dot delay="0ms" />
+                  <Dot delay="150ms" />
+                  <Dot delay="300ms" />
+                </div>
               </div>
             )}
             {error && <p className="text-center text-xs text-red-600">{error}</p>}
@@ -313,5 +336,15 @@ export function ChatWidget({
         </svg>
       </button>
     </div>
+  );
+}
+
+// One bouncing dot of the "typing…" preloader.
+function Dot({ delay }: { delay: string }) {
+  return (
+    <span
+      className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400"
+      style={{ animationDelay: delay }}
+    />
   );
 }
