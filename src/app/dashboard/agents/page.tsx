@@ -12,26 +12,25 @@ import {
   uploadDocument,
 } from "@/lib/api";
 import { PlusIcon, UploadIcon } from "@/components/icons";
+import { toast } from "@/components/toaster";
 
 const DURATIONS = [15, 30, 45, 60];
 
 export default function AgentsPage() {
   const router = useRouter();
   const [agents, setAgents] = useState<Agent[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
   const [embedFor, setEmbedFor] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [editing, setEditing] = useState<Agent | null>(null);
-  const [uploadStatus, setUploadStatus] = useState<Record<string, string>>({});
 
   useEffect(() => {
     listAgents()
       .then((page) => setAgents(page.items))
       .catch((e) => {
         if (e instanceof AuthError) router.replace("/login");
-        else setError(e.message);
+        else toast.error(e.message);
       });
   }, [router]);
 
@@ -40,14 +39,13 @@ export default function AgentsPage() {
     changes: Partial<Pick<Agent, "booking_enabled" | "meeting_duration_minutes">>,
   ) {
     setSavingId(agent.id);
-    setError(null);
     setAgents((prev) =>
       prev?.map((a) => (a.id === agent.id ? { ...a, ...changes } : a)) ?? prev,
     );
     try {
       await updateAgent(agent.id, changes);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't save changes.");
+      toast.error(e instanceof Error ? e.message : "Couldn't save changes.");
       setAgents((prev) =>
         prev?.map((a) => (a.id === agent.id ? agent : a)) ?? prev,
       );
@@ -57,18 +55,11 @@ export default function AgentsPage() {
   }
 
   async function handleUpload(agent: Agent, file: File) {
-    setUploadStatus((s) => ({ ...s, [agent.id]: `Uploading ${file.name}…` }));
     try {
       const { chunks_indexed } = await uploadDocument(agent.id, file);
-      setUploadStatus((s) => ({
-        ...s,
-        [agent.id]: `Trained on ${file.name} (${chunks_indexed} chunks).`,
-      }));
+      toast.success(`Trained on ${file.name} (${chunks_indexed} chunks).`);
     } catch (e) {
-      setUploadStatus((s) => ({
-        ...s,
-        [agent.id]: e instanceof Error ? e.message : "Upload failed.",
-      }));
+      toast.error(e instanceof Error ? e.message : "Upload failed.");
     }
   }
 
@@ -100,7 +91,7 @@ export default function AgentsPage() {
       setCopiedId(agent.id);
       setTimeout(() => setCopiedId((id) => (id === agent.id ? null : id)), 1500);
     } catch {
-      setError("Couldn't copy — select the code and copy manually.");
+      toast.error("Couldn't copy — select the code and copy manually.");
     }
   }
 
@@ -121,12 +112,6 @@ export default function AgentsPage() {
           New agent
         </button>
       </div>
-
-      {error && (
-        <p className="mt-6 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">
-          {error}
-        </p>
-      )}
 
       {agents === null ? (
         <p className="mt-8 text-sm text-muted">Loading agents…</p>
@@ -206,11 +191,6 @@ export default function AgentsPage() {
                 <UploadButton
                   onFile={(file) => handleUpload(agent, file)}
                 />
-                {uploadStatus[agent.id] && (
-                  <span className="text-xs text-muted">
-                    {uploadStatus[agent.id]}
-                  </span>
-                )}
               </div>
 
               {/* Preview + embed */}
@@ -358,13 +338,11 @@ function AgentFormModal({
     greeting: agent?.greeting ?? "",
   });
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim()) return;
     setSaving(true);
-    setError(null);
     try {
       if (agent) {
         // Only send fields the owner actually changed, so we don't re-trigger
@@ -396,7 +374,7 @@ function AgentFormModal({
         onSaved(await createAgent(payload));
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't save agent.");
+      toast.error(e instanceof Error ? e.message : "Couldn't save agent.");
       setSaving(false);
     }
   }
@@ -489,8 +467,6 @@ function AgentFormModal({
           />
           <span className="text-muted">{form.background_color}</span>
         </label>
-
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
 
         <div className="mt-6 flex justify-end gap-3">
           <button

@@ -10,6 +10,7 @@ import {
   type FinancingResult,
   getBusinessSnapshot,
 } from "@/lib/api";
+import { toast } from "@/components/toaster";
 
 const likelihoodStyles: Record<string, string> = {
   high: "bg-green-100 text-green-700",
@@ -51,11 +52,10 @@ export default function FinancingPage() {
   async function assess(e: React.FormEvent) {
     e.preventDefault();
     setAssessing(true);
-    setError(null);
     try {
       setResult(await assessFinancing(form));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't run the assessment.");
+      toast.error(e instanceof Error ? e.message : "Couldn't run the assessment.");
     } finally {
       setAssessing(false);
     }

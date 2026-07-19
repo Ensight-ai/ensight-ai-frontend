@@ -10,6 +10,7 @@ import {
   type GoogleStatus,
 } from "@/lib/api";
 import { getUser } from "@/lib/auth";
+import { toast } from "@/components/toaster";
 
 export default function SettingsPage() {
   // useSearchParams must sit under a Suspense boundary.
@@ -26,11 +27,18 @@ function SettingsInner() {
   const [status, setStatus] = useState<GoogleStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  // Banner reflecting the ?google=connected|error the OAuth callback appends.
+  // Reflects the ?google=connected|error the OAuth callback appends.
   const callbackResult = params.get("google");
   const user = getUser();
+
+  useEffect(() => {
+    if (callbackResult === "connected") {
+      toast.success("Google Calendar connected.");
+    } else if (callbackResult === "error") {
+      toast.error("Couldn't connect Google Calendar. Please try again.");
+    }
+  }, [callbackResult]);
 
   function load() {
     setLoading(true);
@@ -38,7 +46,7 @@ function SettingsInner() {
       .then(setStatus)
       .catch((e) => {
         if (e instanceof AuthError) router.replace("/login");
-        else setError(e.message);
+        else toast.error(e.message);
       })
       .finally(() => setLoading(false));
   }
@@ -47,24 +55,22 @@ function SettingsInner() {
 
   async function connect() {
     setBusy(true);
-    setError(null);
     try {
       const { authorize_url } = await getGoogleConnectUrl();
       window.location.href = authorize_url; // hand off to Google's consent screen
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't start connection.");
+      toast.error(e instanceof Error ? e.message : "Couldn't start connection.");
       setBusy(false);
     }
   }
 
   async function disconnect() {
     setBusy(true);
-    setError(null);
     try {
       await disconnectGoogle();
       load();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't disconnect.");
+      toast.error(e instanceof Error ? e.message : "Couldn't disconnect.");
     } finally {
       setBusy(false);
     }
@@ -76,17 +82,6 @@ function SettingsInner() {
       <p className="mt-1 text-sm text-muted">
         Connect the tools your agents use.
       </p>
-
-      {callbackResult === "connected" && (
-        <p className="mt-6 rounded-lg bg-green-50 px-4 py-2.5 text-sm text-green-700">
-          Google Calendar connected.
-        </p>
-      )}
-      {callbackResult === "error" && (
-        <p className="mt-6 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">
-          Couldn&apos;t connect Google Calendar. Please try again.
-        </p>
-      )}
 
       {/* Account */}
       <section className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-sm">
@@ -159,7 +154,6 @@ function SettingsInner() {
               {busy ? "Redirecting…" : "Connect Google Calendar"}
             </button>
           )}
-          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
         </div>
       </section>
 

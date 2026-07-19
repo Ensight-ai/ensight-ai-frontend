@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { resetPassword } from "@/lib/api";
 import { AuthLayout } from "@/components/auth/auth-layout";
+import { toast } from "@/components/toaster";
 
 const inputCls =
   "w-full rounded-lg border border-border bg-surface px-3.5 py-2.5 text-sm outline-none transition-colors placeholder:text-muted focus:border-brand focus:ring-2 focus:ring-brand/20";
@@ -23,21 +24,19 @@ function ResetInner() {
   const [confirm, setConfirm] = useState("");
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      toast.error("Password must be at least 8 characters.");
       return;
     }
     if (password !== confirm) {
-      setError("Passwords don't match.");
+      toast.error("Passwords don't match.");
       return;
     }
     if (!token) {
-      setError("This reset link is missing its token.");
+      toast.error("This reset link is missing its token.");
       return;
     }
     setLoading(true);
@@ -45,7 +44,9 @@ function ResetInner() {
       const res = await resetPassword(token, password);
       setDone(res.message);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't reset your password.");
+      toast.error(
+        e instanceof Error ? e.message : "Couldn't reset your password.",
+      );
     } finally {
       setLoading(false);
     }
@@ -98,7 +99,6 @@ function ResetInner() {
               className={inputCls}
             />
           </div>
-          {error && <p className="text-sm text-red-600">{error}</p>}
           <button
             type="submit"
             disabled={loading}

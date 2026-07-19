@@ -13,6 +13,7 @@ import {
   listContent,
   updateContent,
 } from "@/lib/api";
+import { toast } from "@/components/toaster";
 
 const CONTENT_TYPES: { value: ContentType; label: string }[] = [
   { value: "blog_post", label: "Blog post" },
@@ -29,7 +30,6 @@ export default function ContentPage() {
   const router = useRouter();
   const [agents, setAgents] = useState<Agent[]>([]);
   const [drafts, setDrafts] = useState<ContentDraft[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   // Form state
   const [agentId, setAgentId] = useState("");
@@ -47,7 +47,7 @@ export default function ContentPage() {
       })
       .catch((e) => {
         if (e instanceof AuthError) router.replace("/login");
-        else setError(e.message);
+        else toast.error(e.message);
       });
   }, [router]);
 
@@ -55,7 +55,6 @@ export default function ContentPage() {
     e.preventDefault();
     if (!agentId || !topic.trim()) return;
     setGenerating(true);
-    setError(null);
     try {
       const draft = await generateContent({
         agent_id: agentId,
@@ -65,7 +64,7 @@ export default function ContentPage() {
       setDrafts((prev) => [draft, ...(prev ?? [])]);
       setTopic("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't generate draft.");
+      toast.error(e instanceof Error ? e.message : "Couldn't generate draft.");
     } finally {
       setGenerating(false);
     }
@@ -79,7 +78,7 @@ export default function ContentPage() {
     try {
       await updateContent(d.id, { status: next });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't update draft.");
+      toast.error(e instanceof Error ? e.message : "Couldn't update draft.");
       setDrafts((prev) => prev?.map((x) => (x.id === d.id ? d : x)) ?? prev);
     }
   }
@@ -89,7 +88,7 @@ export default function ContentPage() {
     try {
       await deleteContent(d.id);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't delete draft.");
+      toast.error(e instanceof Error ? e.message : "Couldn't delete draft.");
       setDrafts((prev) => (prev ? [d, ...prev] : prev));
     }
   }
@@ -168,7 +167,6 @@ export default function ContentPage() {
             </button>
           </>
         )}
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
       </form>
 
       {/* Drafts */}

@@ -12,6 +12,7 @@ import {
 } from "@/lib/api";
 import { cleanAgentText } from "@/lib/text";
 import { AgentPicker, useAgentPicker } from "@/components/dashboard/agent-picker";
+import { toast } from "@/components/toaster";
 
 export default function ConversationsPage() {
   const router = useRouter();
@@ -23,22 +24,20 @@ export default function ConversationsPage() {
   const [detail, setDetail] = useState<ConversationDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [qualifying, setQualifying] = useState(false);
-  const [qualifyMsg, setQualifyMsg] = useState<string | null>(null);
 
   const agentId = picker.agentId;
 
   async function qualify(c: ConversationSummary) {
     setQualifying(true);
-    setQualifyMsg(null);
     try {
       const lead = await qualifyLead(c.agent_id, c.id);
-      setQualifyMsg(
+      toast.success(
         lead.status === "unqualified"
           ? "Reviewed — not a sales lead."
           : `Saved as a ${lead.status} lead (score ${lead.score}).`,
       );
     } catch (e) {
-      setQualifyMsg(e instanceof Error ? e.message : "Couldn't qualify.");
+      toast.error(e instanceof Error ? e.message : "Couldn't qualify.");
     } finally {
       setQualifying(false);
     }
@@ -64,7 +63,6 @@ export default function ConversationsPage() {
     }
     setOpenId(c.id);
     setDetail(null);
-    setQualifyMsg(null);
     try {
       setDetail(await getConversation(c.agent_id, c.id));
     } catch (e) {
@@ -131,9 +129,6 @@ export default function ConversationsPage() {
                     >
                       {qualifying ? "Qualifying…" : "Qualify as lead"}
                     </button>
-                    {qualifyMsg && (
-                      <span className="text-xs text-muted">{qualifyMsg}</span>
-                    )}
                   </div>
                   {detail === null ? (
                     <p className="text-sm text-muted">Loading…</p>

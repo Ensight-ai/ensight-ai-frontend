@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { toast } from "@/components/toaster";
 
 function GoogleLogo() {
   return (
@@ -28,10 +29,8 @@ function GoogleLogo() {
 
 export function GoogleButton({ label }: { label: string }) {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   async function handleClick() {
-    setError(null);
     setLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -42,23 +41,20 @@ export function GoogleButton({ label }: { label: string }) {
     });
     // On success the browser redirects away, so we only reach here on error.
     if (error) {
-      setError(error.message);
+      toast.error(error.message);
       setLoading(false);
     }
   }
 
   return (
-    <div>
-      <button
-        type="button"
-        onClick={handleClick}
-        disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-bg-soft disabled:opacity-60"
-      >
-        <GoogleLogo />
-        {loading ? "Redirecting…" : label}
-      </button>
-      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
-    </div>
+    <button
+      type="button"
+      onClick={handleClick}
+      disabled={loading}
+      className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-fg transition-colors hover:bg-bg-soft disabled:opacity-60"
+    >
+      <GoogleLogo />
+      {loading ? "Redirecting…" : label}
+    </button>
   );
 }

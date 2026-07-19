@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthError, type Plan, startCheckout } from "@/lib/api";
 import { getUser } from "@/lib/auth";
 import { CheckIcon } from "@/components/icons";
+import { toast } from "@/components/toaster";
 
 const plans: {
   id: Plan;
@@ -63,17 +64,15 @@ export default function BillingPage() {
   const router = useRouter();
   const currentPlan = (getUser()?.plan ?? "starter") as Plan;
   const [loadingPlan, setLoadingPlan] = useState<Plan | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   async function subscribe(plan: Plan) {
     setLoadingPlan(plan);
-    setError(null);
     try {
       const { authorization_url } = await startCheckout(plan);
       window.location.href = authorization_url; // hand off to Paystack
     } catch (e) {
       if (e instanceof AuthError) router.replace("/login");
-      else setError(e instanceof Error ? e.message : "Couldn't start checkout.");
+      else toast.error(e instanceof Error ? e.message : "Couldn't start checkout.");
       setLoadingPlan(null);
     }
   }
@@ -86,12 +85,6 @@ export default function BillingPage() {
         <span className="font-medium capitalize text-fg">{currentPlan}</span>{" "}
         plan. Upgrade any time — billed monthly via Paystack.
       </p>
-
-      {error && (
-        <p className="mt-6 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">
-          {error}
-        </p>
-      )}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {plans.map((plan, i) => {

@@ -7,6 +7,7 @@ import { AuthError, type Plan, startCheckout } from "@/lib/api";
 import { clearSession, getToken, getUser, isPaidPlan } from "@/lib/auth";
 import { Logo } from "@/components/logo";
 import { CheckIcon } from "@/components/icons";
+import { toast } from "@/components/toaster";
 
 const plans: {
   id: Plan;
@@ -65,7 +66,6 @@ export default function ChoosePlanPage() {
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<Plan | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!getToken()) {
@@ -82,13 +82,15 @@ export default function ChoosePlanPage() {
 
   async function subscribe(plan: Plan) {
     setLoadingPlan(plan);
-    setError(null);
     try {
       const { authorization_url } = await startCheckout(plan);
       window.location.href = authorization_url;
     } catch (e) {
       if (e instanceof AuthError) router.replace("/login");
-      else setError(e instanceof Error ? e.message : "Couldn't start checkout.");
+      else
+        toast.error(
+          e instanceof Error ? e.message : "Couldn't start checkout.",
+        );
       setLoadingPlan(null);
     }
   }
@@ -129,12 +131,6 @@ export default function ChoosePlanPage() {
             Billed monthly, cancel anytime.
           </p>
         </div>
-
-        {error && (
-          <p className="mx-auto mt-6 max-w-md rounded-lg bg-red-50 px-4 py-2.5 text-center text-sm text-red-600">
-            {error}
-          </p>
-        )}
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
           {plans.map((plan, i) => (

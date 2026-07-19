@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login, resendVerification, signup } from "@/lib/api";
 import { isPaidPlan, saveSession, type Plan } from "@/lib/auth";
+import { toast } from "@/components/toaster";
 
 type Mode = "login" | "signup";
 
@@ -20,7 +21,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [resent, setResent] = useState(false);
   const [resending, setResending] = useState(false);
@@ -41,16 +41,15 @@ export function AuthForm({ mode }: { mode: Mode }) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     setNotice(null);
 
     if (isSignup) {
       if (password.length < 8) {
-        setError("Password must be at least 8 characters.");
+        toast.error("Password must be at least 8 characters.");
         return;
       }
       if (password !== confirm) {
-        setError("Passwords don't match.");
+        toast.error("Passwords don't match.");
         return;
       }
     }
@@ -73,7 +72,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
         router.push(destinationFor(res.user.plan));
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      toast.error(err instanceof Error ? err.message : "Something went wrong.");
       setLoading(false);
     }
   }
@@ -139,11 +138,6 @@ export function AuthForm({ mode }: { mode: Mode }) {
         </div>
       )}
 
-      {error && (
-        <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-          {error}
-        </p>
-      )}
       {notice && (
         <div className="rounded-lg bg-blue-50 px-3 py-2.5 text-sm text-brand">
           <p>{notice}</p>

@@ -10,6 +10,7 @@ import {
   setUserPlan,
 } from "@/lib/api";
 import type { Plan } from "@/lib/auth";
+import { toast } from "@/components/toaster";
 
 const PLANS: Plan[] = ["inactive", "starter", "beta", "pro"];
 const PAGE_SIZE = 20;
@@ -41,14 +42,13 @@ export default function AdminUsersPage() {
 
   async function changePlan(u: AdminUserDetail, plan: Plan) {
     setBusyId(u.id);
-    setError(null);
     setUsers((prev) =>
       prev?.map((x) => (x.id === u.id ? { ...x, plan } : x)) ?? prev,
     );
     try {
       await setUserPlan(u.id, plan);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't update plan.");
+      toast.error(e instanceof Error ? e.message : "Couldn't update plan.");
       setUsers((prev) => prev?.map((x) => (x.id === u.id ? u : x)) ?? prev);
     } finally {
       setBusyId(null);
@@ -63,13 +63,12 @@ export default function AdminUsersPage() {
     )
       return;
     setBusyId(u.id);
-    setError(null);
     try {
       await deleteUser(u.id);
       setUsers((prev) => prev?.filter((x) => x.id !== u.id) ?? prev);
       setTotal((t) => Math.max(0, t - 1));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't delete user.");
+      toast.error(e instanceof Error ? e.message : "Couldn't delete user.");
     } finally {
       setBusyId(null);
     }
