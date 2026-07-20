@@ -4,7 +4,7 @@ import { CheckIcon } from "./icons";
 const plans = [
   {
     name: "Starter",
-    price: "₦8,000",
+    price: "₦8,500",
     period: "/mo",
     usd: "≈ $6 USD / month",
     tagline: "Everything to launch your first AI agent.",
@@ -22,7 +22,7 @@ const plans = [
   },
   {
     name: "Beta",
-    price: "₦22,000",
+    price: "₦22,500",
     period: "/mo",
     usd: "≈ $16 USD / month",
     tagline: "Add voice, meeting booking, and content.",
@@ -41,13 +41,13 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "₦34,500",
+    price: "₦35,000",
     period: "/mo",
     usd: "≈ $25 USD / month",
     tagline: "The full suite, including financial access.",
     features: [
       "Everything in Beta, plus:",
-      "Up to 10 agents",
+      "Up to 6 agents",
       "Chat + voice on one agent",
       "Financial access assistant",
       "Advanced analytics",
@@ -67,7 +67,7 @@ export function Pricing() {
           Simple pricing that grows with you
         </h2>
         <p className="mt-4 text-muted">
-          Start at ₦8,000/month. Upgrade when you need voice, booking, more
+          Start at ₦8,500/month. Upgrade when you need voice, booking, more
           agents, or financial access.
         </p>
       </div>

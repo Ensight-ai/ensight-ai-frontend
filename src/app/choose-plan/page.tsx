@@ -21,7 +21,7 @@ const plans: {
   {
     id: "starter",
     name: "Starter",
-    price: "₦8,000",
+    price: "₦8,500",
     usd: "≈ $6/mo",
     blurb: "Launch your first AI agent.",
     features: [
@@ -34,7 +34,7 @@ const plans: {
   {
     id: "beta",
     name: "Beta",
-    price: "₦22,000",
+    price: "₦22,500",
     usd: "≈ $16/mo",
     blurb: "Voice, booking and content.",
     features: [
@@ -49,11 +49,11 @@ const plans: {
   {
     id: "pro",
     name: "Pro",
-    price: "₦34,500",
+    price: "₦35,000",
     usd: "≈ $25/mo",
     blurb: "The full suite + financing.",
     features: [
-      "Up to 10 agents",
+      "Up to 6 agents",
       "Chat + voice on one agent",
       "Financial access assistant",
       "Advanced analytics",
