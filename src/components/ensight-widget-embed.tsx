@@ -1,13 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-
-const WIDGET_URL =
-  "https://www.ensightlabs.xyz/w/pk_vCBlOX_fZiQbJRZsPHf3GEUpHKowGTVG?color=%234a0ed8&name=Nama+agro+agent&position=bottom-right&capability=both";
+import Script from "next/script";
 
 /**
  * Site-owner embed for the public widget. Do not render it on the widget
- * route itself, otherwise the public iframe would contain another iframe.
+ * route itself, otherwise the public widget would load itself again.
  */
 export function EnsightWidgetEmbed() {
   const pathname = usePathname();
@@ -15,21 +13,15 @@ export function EnsightWidgetEmbed() {
   if (pathname.startsWith("/w/")) return null;
 
   return (
-    <iframe
-      title="EnsightLabs chat widget"
-      src={WIDGET_URL}
-      style={{
-        position: "fixed",
-        bottom: 0,
-        right: 0,
-        width: "min(420px, 100vw)",
-        height: "min(600px, 100vh)",
-        border: 0,
-        background: "transparent",
-        zIndex: 2147483647,
-      }}
-      allow="microphone; clipboard-write"
-      loading="eager"
+    <Script
+      src="https://www.ensightlabs.xyz/widget.js"
+      data-agent-key="pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvy"
+      data-color="#2563eb"
+      data-name="Ensightlabs assistant"
+      data-position="bottom-right"
+      data-capability="both"
+      data-greeting="Hi!, this is ensight labs AI assistant, how can we help you today ?☺️☺️"
+      strategy="afterInteractive"
     />
   );
 }
