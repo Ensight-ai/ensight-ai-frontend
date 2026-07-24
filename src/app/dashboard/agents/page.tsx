@@ -82,7 +82,7 @@ export default function AgentsPage() {
       agent.capability === "chat"
         ? "clipboard-write"
         : "microphone; clipboard-write";
-    return `<iframe src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:420px;height:600px;border:0;background:transparent;z-index:2147483647" allow="${allow}"></iframe>`;
+    return `<iframe title="EnsightLabs chat widget" src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:min(420px,100vw);height:min(600px,100vh);border:0;background:transparent;z-index:2147483647" allow="${allow}" loading="eager"></iframe>`;
   }
 
   async function copyEmbed(agent: Agent) {

@@ -26,7 +26,7 @@ export default async function WidgetPage({
       : "chat";
 
   return (
-    <main className="min-h-screen bg-transparent">
+    <main className="widget-page min-h-screen bg-transparent">
       <ChatWidget
         publicKey={publicKey}
         name={sp.name || "Assistant"}

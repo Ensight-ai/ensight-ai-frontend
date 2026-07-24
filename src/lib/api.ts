@@ -1,6 +1,15 @@
 import { getToken, type Plan, type UserProfile } from "./auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+// The API URL is baked into the browser bundle at build time. Keep local
+// development convenient, but never make a production visitor call their own
+// computer at localhost when the deployment forgot to set the env variable.
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ??
+  (typeof window !== "undefined" &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1")
+    ? "http://localhost:8000"
+    : "https://api.ensightlabs.xyz");
 
 export interface AuthResponse {
   access_token: string;

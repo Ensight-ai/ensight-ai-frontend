@@ -77,6 +77,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* The public widget is loaded inside a customer-controlled iframe. Its
+   document must not paint a white 420px-wide rectangle over the host site. */
+html:has(.widget-page),
+html:has(.widget-page) body {
+  background: transparent;
+}
+
+html:has(.widget-page) body {
+  overflow: hidden;
+}
+
 /* Subtle grid backdrop used behind hero sections */
 .bg-grid {
   background-image:
