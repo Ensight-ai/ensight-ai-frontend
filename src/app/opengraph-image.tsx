@@ -5,7 +5,7 @@ export const alt =
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Branded social share card. Applies to every route by default.
+//social share card. Applies to every route by default.
 export default function Image() {
   return new ImageResponse(
     (
