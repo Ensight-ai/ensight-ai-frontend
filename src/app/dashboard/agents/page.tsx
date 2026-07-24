@@ -227,8 +227,9 @@ export default function AgentsPage() {
                     </button>
                   </div>
                   <p className="mt-2 text-xs text-muted">
-                    Paste this into your website&apos;s HTML, just before
-                    {" "}<code className="rounded bg-bg-soft px-1">&lt;/body&gt;</code>.
+                    Paste this into your site&apos;s page HTML, just before the
+                    {" "}<code className="rounded bg-bg-soft px-1">&lt;/body&gt;</code>
+                    {" "}closing tag.
                     {agent.capability !== "chat" &&
                       " Visitors will be asked to allow microphone access for voice."}
                   </p>
