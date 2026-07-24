@@ -79,7 +79,20 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
-        <iframe id="ensight-widget-pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj" src="https://www.ensightlabs.xyz/w/pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj?color=%232563eb&name=Ensightlabs+assistant&position=bottom-right&capability=both&greeting=Hi%21%2C+this+is+ensight+labs+AI+assistant%2C+how+can+we+help+you+today+%3F%E2%98%BA%EF%B8%8F%E2%98%BA%EF%B8%8F" title="Ensightlabs assistant" style="position:fixed;bottom:0;right:0;width:min(420px,100vw);height:min(600px,100dvh);border:0;background:transparent;z-index:2147483647;transition:width .15s ease,height .15s ease" allow="microphone; clipboard-write"></iframe>
+        <iframe
+          src="https://www.ensightlabs.xyz/w/pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj?color=%232563eb&name=Ensightlabs+assistant&position=bottom-right&capability=both&greeting=Hi%21%2C+this+is+ensight+labs+AI+assistant%2C+how+can+we+help+you+today+%3F%E2%98%BA%EF%B8%8F%E2%98%BA%EF%B8%8F"
+          style={{
+            position: "fixed",
+            bottom: 0,
+            right: 0,
+            width: 420,
+            height: 600,
+            border: 0,
+            background: "transparent",
+            zIndex: 2147483647,
+          }}
+          allow="microphone; clipboard-write"
+        />
         <Toaster />
       </body>
     </html>
