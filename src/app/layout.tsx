@@ -80,6 +80,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
         <Toaster />
+        <iframe title="EnsightLabs chat widget" src="https://www.ensightlabs.xyz/w/pk_vCBlOX_fZiQbJRZsPHf3GEUpHKowGTVG?color=%234a0ed8&name=Nama+agro+agent&position=bottom-right&capability=both" style="position:fixed;bottom:0;right:0;width:min(420px,100vw);height:min(600px,100vh);border:0;background:transparent;z-index:2147483647" allow="microphone; clipboard-write" loading="eager"></iframe>
       </body>
     </html>
   );
