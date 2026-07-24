@@ -81,7 +81,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
         <WidgetEmbed
-          src="https://www.ensightlabs.xyz/w/pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj?color=%232563eb&name=Ensightlabs+assistant&position=bottom-right&capability=both&greeting=Hi%21%2C+this+is+ensight+labs+AI+assistant%2C+how+can+we+help+you+today+%3F%E2%98%BA%EF%B8%8F%E2%98%BA%EF%B8%8F"
+          src="/w/pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj?color=%232563eb&name=Ensightlabs+assistant&position=bottom-right&capability=both&greeting=Hi%21%2C+this+is+ensight+labs+AI+assistant%2C+how+can+we+help+you+today+%3F%E2%98%BA%EF%B8%8F%E2%98%BA%EF%B8%8F"
         />
         <Toaster />
       </body>

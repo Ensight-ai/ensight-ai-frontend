@@ -83,7 +83,7 @@ export default function AgentsPage() {
         ? "clipboard-write"
         : "microphone; clipboard-write";
     const id = `ensight-widget-${agent.public_key.replace(/[^a-zA-Z0-9_-]/g, "")}`;
-    return `<iframe id="${id}" src="${widgetUrl(agent)}" title="${agent.name.replace(/"/g, "&quot;")}" style="position:fixed;bottom:0;${side}:0;width:96px;height:96px;border:0;background:transparent;z-index:2147483647;transition:width .15s ease,height .15s ease" allow="${allow}"></iframe><script>(function(){var f=document.getElementById("${id}");window.addEventListener("message",function(e){if(e.source!==f.contentWindow||!e.data||e.data.type!=="ensight-widget-resize"||typeof e.data.open!=="boolean")return;f.style.width=e.data.open?"min(420px, 100vw)":"96px";f.style.height=e.data.open?"min(600px, 100dvh)":"96px";});})();</script>`;
+    return `<iframe id="${id}" src="${widgetUrl(agent)}" title="${agent.name.replace(/"/g, "&quot;")}" style="position:fixed;bottom:0;${side}:0;width:min(420px,100vw);height:min(600px,100dvh);border:0;background:transparent;z-index:2147483647;transition:width .15s ease,height .15s ease" allow="${allow}"></iframe><script>(function(){var f=document.getElementById("${id}");window.addEventListener("message",function(e){if(e.source!==f.contentWindow||!e.data||e.data.type!=="ensight-widget-resize"||typeof e.data.open!=="boolean")return;f.style.width=e.data.open?"min(420px, 100vw)":"96px";f.style.height=e.data.open?"min(600px, 100dvh)":"96px";});})();</script>`;
   }
 
   async function copyEmbed(agent: Agent) {
