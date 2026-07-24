@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { Toaster } from "@/components/toaster";
+import { EnsightWidgetEmbed } from "@/components/ensight-widget-embed";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -79,8 +80,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
+        <EnsightWidgetEmbed />
         <Toaster />
-        <iframe title="EnsightLabs chat widget" src="https://www.ensightlabs.xyz/w/pk_vCBlOX_fZiQbJRZsPHf3GEUpHKowGTVG?color=%234a0ed8&name=Nama+agro+agent&position=bottom-right&capability=both" style="position:fixed;bottom:0;right:0;width:min(420px,100vw);height:min(600px,100vh);border:0;background:transparent;z-index:2147483647" allow="microphone; clipboard-write" loading="eager"></iframe>
       </body>
     </html>
   );

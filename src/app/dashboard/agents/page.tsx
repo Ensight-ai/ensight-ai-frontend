@@ -76,13 +76,25 @@ export default function AgentsPage() {
   }
 
   function embedSnippet(agent: Agent) {
-    const sidePin = agent.position === "bottom-left" ? "left:0" : "right:0";
-    // Voice agents need microphone permission inside the iframe.
-    const allow =
-      agent.capability === "chat"
-        ? "clipboard-write"
-        : "microphone; clipboard-write";
-    return `<iframe title="EnsightLabs chat widget" src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:min(420px,100vw);height:min(600px,100vh);border:0;background:transparent;z-index:2147483647" allow="${allow}" loading="eager"></iframe>`;
+    const attrs = [
+      `data-agent-key="${agent.public_key}"`,
+      `data-color="${agent.background_color}"`,
+      `data-name="${escapeHtmlAttribute(agent.name)}"`,
+      `data-position="${agent.position}"`,
+      `data-capability="${agent.capability}"`,
+    ];
+    if (agent.greeting) {
+      attrs.push(`data-greeting="${escapeHtmlAttribute(agent.greeting)}"`);
+    }
+    return `<script src="https://www.ensightlabs.xyz/widget.js" ${attrs.join(" ")}></script>`;
+  }
+
+  function escapeHtmlAttribute(value: string) {
+    return value
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
   async function copyEmbed(agent: Agent) {
