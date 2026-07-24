@@ -60,6 +60,13 @@ export function ChatWidget({
   const canChat = capability === "chat" || capability === "both";
   const canVoice = capability === "voice" || capability === "both";
 
+  // Let an embedding page resize the iframe to just the launcher while closed.
+  useEffect(() => {
+    if (window.parent !== window) {
+      window.parent.postMessage({ type: "ensight-widget-resize", open }, "*");
+    }
+  }, [open]);
+
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, sending, greetingTyping, open]);

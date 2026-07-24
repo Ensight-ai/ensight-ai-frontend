@@ -76,13 +76,14 @@ export default function AgentsPage() {
   }
 
   function embedSnippet(agent: Agent) {
-    const sidePin = agent.position === "bottom-left" ? "left:0" : "right:0";
+    const side = agent.position === "bottom-left" ? "left" : "right";
     // Voice agents need microphone permission inside the iframe.
     const allow =
       agent.capability === "chat"
         ? "clipboard-write"
         : "microphone; clipboard-write";
-    return `<iframe src="${widgetUrl(agent)}" style="position:fixed;bottom:0;${sidePin};width:420px;height:600px;border:0;background:transparent;z-index:2147483647" allow="${allow}"></iframe>`;
+    const id = `ensight-widget-${agent.public_key.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+    return `<iframe id="${id}" src="${widgetUrl(agent)}" title="${agent.name.replace(/"/g, "&quot;")}" style="position:fixed;bottom:0;${side}:0;width:96px;height:96px;border:0;background:transparent;z-index:2147483647;transition:width .15s ease,height .15s ease" allow="${allow}"></iframe><script>(function(){var f=document.getElementById("${id}");window.addEventListener("message",function(e){if(e.source!==f.contentWindow||!e.data||e.data.type!=="ensight-widget-resize"||typeof e.data.open!=="boolean")return;f.style.width=e.data.open?"min(420px, 100vw)":"96px";f.style.height=e.data.open?"min(600px, 100dvh)":"96px";});})();</script>`;
   }
 
   async function copyEmbed(agent: Agent) {

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { Toaster } from "@/components/toaster";
+import { WidgetEmbed } from "@/components/widget-embed";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -79,19 +80,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
-        <iframe
+        <WidgetEmbed
           src="https://www.ensightlabs.xyz/w/pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj?color=%232563eb&name=Ensightlabs+assistant&position=bottom-right&capability=both&greeting=Hi%21%2C+this+is+ensight+labs+AI+assistant%2C+how+can+we+help+you+today+%3F%E2%98%BA%EF%B8%8F%E2%98%BA%EF%B8%8F"
-          style={{
-            position: "fixed",
-            bottom: 0,
-            right: 0,
-            width: 420,
-            height: 600,
-            border: 0,
-            background: "transparent",
-            zIndex: 2147483647,
-          }}
-          allow="microphone; clipboard-write"
         />
         <Toaster />
       </body>
