@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { Toaster } from "@/components/toaster";
-import { EnsightWidgetEmbed } from "@/components/ensight-widget-embed";
+// import { EnsightWidgetEmbed } from "@/components/ensight-widget-embed";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -80,7 +80,13 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-bg text-fg">
         {children}
-        <EnsightWidgetEmbed />
+        <script src="https://www.ensightlabs.xyz/widget.js?v=2"
+          data-agent-key="pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj"
+          data-color="#2563eb"
+          data-name="Ensightlabs assistant"
+          data-position="bottom-right"
+          data-capability="both"
+          data-greeting="Hi!, this is ensight labs AI assistant, how can we help you today ?☺️☺️"></script>
         <Toaster />
       </body>
     </html>
