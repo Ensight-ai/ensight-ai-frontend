@@ -26,7 +26,7 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <>
+    <div className="marketing-page min-h-screen bg-bg text-fg">
       <SiteHeader />
       <main className="flex-1">
         <section className="relative overflow-hidden">
@@ -112,6 +112,6 @@ export default function AboutPage() {
         </section>
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

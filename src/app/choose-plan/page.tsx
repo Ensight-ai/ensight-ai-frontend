@@ -97,14 +97,14 @@ export default function ChoosePlanPage() {
 
   if (!ready) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="product-page flex min-h-screen items-center justify-center bg-bg">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-brand" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="product-page min-h-screen bg-bg text-fg">
       <header className="flex items-center justify-between px-5 py-5 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Logo className="h-7 w-7" />
@@ -137,9 +137,9 @@ export default function ChoosePlanPage() {
             <div
               key={plan.id}
               style={{ animationDelay: `${i * 70}ms` }}
-              className={`animate-fade-up min-w-0 rounded-2xl border p-6 shadow-sm ${
+              className={`animate-fade-up min-w-0 rounded-3xl border p-7 shadow-2xl shadow-black/10 ${
                 plan.highlighted
-                  ? "border-brand bg-surface shadow-brand/10"
+                  ? "border-blue-400/60 bg-gradient-to-b from-brand/25 to-surface shadow-brand/20 lg:-translate-y-3"
                   : "border-border bg-surface"
               }`}
             >

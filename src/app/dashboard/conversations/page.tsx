@@ -13,6 +13,7 @@ import {
 import { cleanAgentText } from "@/lib/text";
 import { AgentPicker, useAgentPicker } from "@/components/dashboard/agent-picker";
 import { toast } from "@/components/toaster";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 export default function ConversationsPage() {
   const router = useRouter();
@@ -72,12 +73,9 @@ export default function ConversationsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Conversations</h1>
-      <p className="mt-1 text-sm text-muted">
-        Every chat your agents have had with visitors.
-      </p>
+      <PageHeader title="Conversations" description="Every chat your agents have had with visitors." />
 
-      <div className="mt-6">
+      <div className="mt-7 rounded-2xl border border-border bg-surface p-4 shadow-sm">
         <AgentPicker picker={picker} />
       </div>
 

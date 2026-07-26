@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import { Toaster } from "@/components/toaster";
 import "./globals.css";
@@ -77,17 +78,19 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-bg text-fg">
+      <body className="app-canvas min-h-full flex flex-col bg-bg text-fg">
         {children}
         <Toaster />
-        <script src="https://www.ensightlabs.xyz/widget.js?v=3"
+        <Script
+          strategy="afterInteractive"
+          src="https://www.ensightlabs.xyz/widget.js?v=3"
           data-agent-key="pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj"
           data-color="#2563eb"
           data-name="Ensightlabs assistant"
           data-position="bottom-right"
           data-capability="both"
-          data-greeting="Hi!, this is ensight labs AI assistant, how can we help you today ?☺️☺️"></script>
-
+          data-greeting="Hi!, this is ensight labs AI assistant, how can we help you today ?☺️☺️"
+        />
       </body>
     </html>
   );

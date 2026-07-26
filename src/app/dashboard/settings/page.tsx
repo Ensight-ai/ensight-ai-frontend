@@ -11,6 +11,7 @@ import {
 } from "@/lib/api";
 import { getUser } from "@/lib/auth";
 import { toast } from "@/components/toaster";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 export default function SettingsPage() {
   // useSearchParams must sit under a Suspense boundary.
@@ -78,13 +79,10 @@ function SettingsInner() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-      <p className="mt-1 text-sm text-muted">
-        Connect the tools your agents use.
-      </p>
+      <PageHeader title="Settings" description="Connect the tools your agents use." />
 
       {/* Account */}
-      <section className="mt-6 rounded-2xl border border-border bg-surface p-6 shadow-sm">
+      <section className="mt-7 rounded-2xl border border-border bg-surface p-6 shadow-sm">
         <h2 className="font-semibold">Account</h2>
         <div className="mt-4 flex flex-wrap items-center justify-between gap-4 border-t border-border pt-4">
           <div className="text-sm">

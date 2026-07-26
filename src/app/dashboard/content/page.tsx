@@ -14,6 +14,7 @@ import {
   updateContent,
 } from "@/lib/api";
 import { toast } from "@/components/toaster";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 const CONTENT_TYPES: { value: ContentType; label: string }[] = [
   { value: "blog_post", label: "Blog post" },
@@ -101,15 +102,12 @@ export default function ContentPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Content</h1>
-      <p className="mt-1 text-sm text-muted">
-        Draft marketing copy grounded in your agents&apos; knowledge.
-      </p>
+      <PageHeader title="Content" description={<>Draft marketing copy grounded in your agents&apos; knowledge.</>} />
 
       {/* Generate form */}
       <form
         onSubmit={onGenerate}
-        className="mt-6 rounded-2xl border border-border bg-surface p-5 shadow-sm"
+        className="mt-7 rounded-2xl border border-border bg-surface p-6 shadow-sm"
       >
         {agents.length === 0 ? (
           <p className="text-sm text-muted">

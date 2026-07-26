@@ -46,7 +46,7 @@ function ReadinessMockup() {
 
 export function FinancingShowcase() {
   return (
-    <section className="border-y border-border/60 bg-bg">
+    <section className="border-y border-border/60 bg-bg-soft/60">
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-24 lg:grid-cols-2">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-soft px-3 py-1 text-xs text-brand">

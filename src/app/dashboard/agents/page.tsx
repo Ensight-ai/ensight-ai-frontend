@@ -13,6 +13,7 @@ import {
 } from "@/lib/api";
 import { PlusIcon, UploadIcon } from "@/components/icons";
 import { toast } from "@/components/toaster";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 const DURATIONS = [15, 30, 45, 60];
 
@@ -109,21 +110,13 @@ export default function AgentsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Agents</h1>
-          <p className="mt-1 text-sm text-muted">
-            Create agents, train them on your docs, and turn on booking.
-          </p>
-        </div>
-        <button
+      <PageHeader title="Agents" description="Create agents, train them on your docs, and turn on booking." action={<button
           onClick={() => setShowCreate(true)}
           className="inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-brand/25 transition-colors hover:bg-brand-soft"
         >
           <PlusIcon className="h-4 w-4" />
           New agent
-        </button>
-      </div>
+        </button>} />
 
       {agents === null ? (
         <p className="mt-8 text-sm text-muted">Loading agents…</p>
@@ -141,12 +134,12 @@ export default function AgentsPage() {
           </button>
         </div>
       ) : (
-        <ul className="mt-6 space-y-4">
+        <ul className="mt-7 space-y-4">
           {agents.map((agent, i) => (
             <li
               key={agent.id}
               style={{ animationDelay: `${i * 60}ms` }}
-              className="animate-fade-up rounded-2xl border border-border bg-surface p-5 shadow-sm"
+              className="animate-fade-up rounded-2xl border border-border bg-surface p-6 shadow-sm transition-shadow hover:shadow-md"
             >
               <div className="flex items-center justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">

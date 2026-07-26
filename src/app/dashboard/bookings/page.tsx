@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthError, type Booking, listBookings } from "@/lib/api";
 import { AgentPicker, useAgentPicker } from "@/components/dashboard/agent-picker";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 export default function BookingsPage() {
   const router = useRouter();
@@ -25,12 +26,9 @@ export default function BookingsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Bookings</h1>
-      <p className="mt-1 text-sm text-muted">
-        Meetings your agents booked on your calendar.
-      </p>
+      <PageHeader title="Bookings" description="Meetings your agents booked on your calendar." />
 
-      <div className="mt-6">
+      <div className="mt-7 rounded-2xl border border-border bg-surface p-4 shadow-sm">
         <AgentPicker picker={picker} />
       </div>
 

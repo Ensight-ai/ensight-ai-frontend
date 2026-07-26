@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { type AgentAnalytics, AuthError, getAnalytics } from "@/lib/api";
 import { AgentPicker, useAgentPicker } from "@/components/dashboard/agent-picker";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 export default function AnalyticsPage() {
   const router = useRouter();
@@ -37,12 +38,9 @@ export default function AnalyticsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Analytics</h1>
-      <p className="mt-1 text-sm text-muted">
-        How visitors are engaging with each agent.
-      </p>
+      <PageHeader title="Analytics" description="How visitors are engaging with each agent." />
 
-      <div className="mt-6">
+      <div className="mt-7 rounded-2xl border border-border bg-surface p-4 shadow-sm">
         <AgentPicker picker={picker} />
       </div>
 

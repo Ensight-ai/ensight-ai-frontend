@@ -77,6 +77,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Root palette for every first-party route: white-led with blue structure and
+   a small amount of navy contrast. Route shells can arrange the ratio, but
+   they all inherit these same colors. */
+.app-canvas {
+  --color-bg: #ffffff;
+  --color-bg-soft: #f3f7ff;
+  --color-surface: #ffffff;
+  --color-border: #dce6f3;
+  --color-fg: #0b1730;
+  --color-muted: #64748b;
+  background:
+    radial-gradient(circle at 92% 8%, rgba(37, 99, 235, 0.06), transparent 22rem),
+    #ffffff;
+}
+
 /* The public widget is loaded inside a customer-controlled iframe. Its
    document must not paint a white 420px-wide rectangle over the host site. */
 html:has(.widget-page),
@@ -101,4 +116,68 @@ html:has(.widget-page) body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* The public site uses the same EnsightLabs blue in a more cinematic system. */
+.marketing-page {
+  --color-bg: #ffffff;
+  --color-bg-soft: #f3f7ff;
+  --color-surface: #ffffff;
+  --color-border: #dbe7f7;
+  --color-fg: #0b1730;
+  --color-muted: #60708a;
+  background:
+    radial-gradient(circle at 80% 22%, rgba(37, 99, 235, 0.08), transparent 25rem),
+    radial-gradient(circle at 10% 58%, rgba(14, 165, 233, 0.05), transparent 28rem),
+    #ffffff;
+}
+
+.marketing-page .text-gradient {
+  background: linear-gradient(110deg, #1d4ed8 0%, #2563eb 45%, #0284c7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.marketing-page main > section {
+  position: relative;
+}
+
+.marketing-page main > section:not(:first-child)::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background-image: linear-gradient(rgba(37, 99, 235, 0.035) 1px, transparent 1px);
+  background-size: 100% 72px;
+  mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+}
+
+.marketing-page ::selection {
+  background: #2563eb;
+  color: white;
+}
+
+.product-page {
+  --color-bg: #ffffff;
+  --color-bg-soft: #f3f7ff;
+  --color-surface: #ffffff;
+  --color-border: #dce6f3;
+  --color-fg: #0b1730;
+  --color-muted: #64748b;
+  background:
+    radial-gradient(circle at 82% 8%, rgba(37, 99, 235, 0.07), transparent 24rem),
+    #f8fbff;
+  color: var(--color-fg);
+}
+
+.product-page input,
+.product-page select,
+.product-page textarea {
+  color-scheme: light;
+}
+
+.product-page ::selection {
+  background: #2563eb;
+  color: white;
 }

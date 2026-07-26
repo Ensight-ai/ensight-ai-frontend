@@ -106,7 +106,7 @@ const sections: { heading: string; body: string[] }[] = [
 
 export default function TermsPage() {
   return (
-    <>
+    <div className="marketing-page min-h-screen bg-bg text-fg">
       <SiteHeader />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl px-5 py-16 lg:py-20">
@@ -137,6 +137,6 @@ export default function TermsPage() {
         </div>
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

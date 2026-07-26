@@ -8,6 +8,7 @@ import {
   type LeadStatus,
   listLeads,
 } from "@/lib/api";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 const STATUS_FILTERS: { label: string; value: LeadStatus | "all" }[] = [
   { label: "All", value: "all" },
@@ -47,13 +48,10 @@ export default function LeadsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Leads</h1>
-      <p className="mt-1 text-sm text-muted">
-        Sales-ready visitors your agents spotted, best first.
-      </p>
+      <PageHeader title="Leads" description="Sales-ready visitors your agents spotted, best first." />
 
       {/* Filters */}
-      <div className="mt-6 flex flex-wrap items-center gap-3">
+      <div className="mt-7 flex flex-wrap items-center gap-3 rounded-2xl border border-border bg-surface p-3 shadow-sm">
         <div className="flex gap-1 rounded-full border border-border bg-surface p-1">
           {STATUS_FILTERS.map((f) => (
             <button

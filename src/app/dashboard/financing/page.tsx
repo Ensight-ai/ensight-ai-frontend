@@ -11,6 +11,7 @@ import {
   getBusinessSnapshot,
 } from "@/lib/api";
 import { toast } from "@/components/toaster";
+import { PageHeader } from "@/components/dashboard/page-header";
 
 const likelihoodStyles: Record<string, string> = {
   high: "bg-green-100 text-green-700",
@@ -79,12 +80,7 @@ export default function FinancingPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Financial access</h1>
-      <p className="mt-1 text-sm text-muted">
-        EnsightLabs already knows your business. Turn that activity into a
-        loan-readiness assessment and a lender-ready application — no paperwork
-        from scratch.
-      </p>
+      <PageHeader title="Financial access" description="EnsightLabs already knows your business. Turn that activity into a loan-readiness assessment and a lender-ready application — no paperwork from scratch." />
 
       {error && (
         <p className="mt-6 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">
@@ -93,7 +89,7 @@ export default function FinancingPage() {
       )}
 
       {/* Snapshot */}
-      <h2 className="mt-8 text-sm font-semibold text-muted">
+      <h2 className="mt-8 text-xs font-semibold uppercase tracking-[0.14em] text-brand">
         What EnsightLabs already sees
       </h2>
       <div className="mt-3 grid gap-4 sm:grid-cols-4">

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AuthError, type Plan, startCheckout } from "@/lib/api";
 import { getUser } from "@/lib/auth";
 import { CheckIcon } from "@/components/icons";
+import { PageHeader } from "@/components/dashboard/page-header";
 import { toast } from "@/components/toaster";
 
 const plans: {
@@ -79,12 +80,7 @@ export default function BillingPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
-      <p className="mt-1 text-sm text-muted">
-        You&apos;re on the{" "}
-        <span className="font-medium capitalize text-fg">{currentPlan}</span>{" "}
-        plan. Upgrade any time — billed monthly via Paystack.
-      </p>
+      <PageHeader title="Billing" description={<>You&apos;re on the <span className="font-medium capitalize text-fg">{currentPlan}</span> plan. Upgrade any time — billed monthly via Paystack.</>} />
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">
         {plans.map((plan, i) => {
