@@ -5,8 +5,6 @@ import { WidgetPreview } from "./widget-preview";
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-white text-fg">
-      <div className="absolute inset-y-0 right-0 hidden w-[40%] bg-gradient-to-br from-[#0a1e45] via-brand to-[#123d8f] lg:block" />
-      <div className="absolute right-0 top-0 hidden h-full w-[40%] bg-[radial-gradient(circle_at_45%_35%,rgba(125,211,252,0.35),transparent_34%)] lg:block" />
       <div className="bg-grid absolute inset-0 opacity-40 [mask-image:linear-gradient(to_right,black,transparent_62%)]" />
       <div className="absolute -left-48 top-[-16rem] h-[36rem] w-[36rem] rounded-full bg-brand/10 blur-[120px]" />
 
@@ -50,7 +48,7 @@ export function Hero() {
           </p>
         </div>
 
-        <div className="relative flex min-h-[440px] items-center justify-center overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#0a1e45] via-brand to-[#123d8f] p-6 lg:overflow-visible lg:rounded-none lg:bg-none lg:p-0 lg:justify-end">
+        <div className="relative flex min-h-[440px] items-center justify-center overflow-hidden rounded-[2.5rem] bg-white p-6 lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:justify-end">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(125,211,252,0.28),transparent_35%)] lg:hidden" />
           <div className="absolute right-8 top-4 hidden rounded-2xl border border-blue-300/20 bg-blue-400/10 px-4 py-3 text-xs text-blue-100 shadow-2xl backdrop-blur-md sm:block">
             <span className="mr-2 inline-block h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_12px_#34d399]" /> Agent online
