@@ -42,8 +42,11 @@ const features = [
 
 export function Features() {
   return (
-    <section id="features" className="mx-auto max-w-6xl px-5 py-24">
+    <section id="features" className="mx-auto max-w-7xl px-5 py-28">
       <div className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          One system. Six superpowers.
+        </p>
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Everything you need to answer, convert, and grow
         </h2>
@@ -54,17 +57,23 @@ export function Features() {
         </p>
       </div>
 
-      <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {features.map((f) => (
+      <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-12">
+        {features.map((f, i) => (
           <div
             key={f.title}
-            className="group rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-slate-200/50 transition-all hover:-translate-y-0.5 hover:border-brand/50 hover:shadow-lg hover:shadow-brand/10"
+            className={`group relative overflow-hidden rounded-3xl border border-border bg-surface p-7 shadow-xl shadow-blue-950/[0.06] transition-all hover:-translate-y-1 hover:border-blue-400/50 hover:shadow-brand/10 ${
+              i === 0 || i === 5 ? "lg:col-span-7" : i === 1 || i === 4 ? "lg:col-span-5" : "lg:col-span-6"
+            }`}
           >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-accent transition-colors group-hover:bg-brand/25">
+            <span className="absolute right-5 top-2 text-7xl font-semibold tracking-tighter text-brand/[0.045]">
+              0{i + 1}
+            </span>
+            <div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-brand/10 blur-3xl transition-colors group-hover:bg-brand/20" />
+            <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl border border-brand/15 bg-brand/10 text-brand transition-all group-hover:scale-110 group-hover:bg-brand group-hover:text-white">
               <f.icon className="h-5 w-5" />
             </span>
-            <h3 className="mt-5 text-lg font-semibold">{f.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{f.body}</p>
+            <h3 className="relative mt-8 text-xl font-semibold">{f.title}</h3>
+            <p className="relative mt-3 max-w-lg text-sm leading-7 text-muted">{f.body}</p>
           </div>
         ))}
       </div>

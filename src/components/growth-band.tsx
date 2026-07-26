@@ -20,8 +20,8 @@ const pillars = [
 
 export function GrowthBand() {
   return (
-    <section className="border-y border-border/60 bg-bg-soft/40">
-      <div className="mx-auto max-w-6xl px-5 py-20">
+    <section className="border-y border-border/60 bg-bg-soft/60">
+      <div className="mx-auto max-w-7xl px-5 py-28">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             We don&apos;t just give you a chatbot.
@@ -35,18 +35,21 @@ export function GrowthBand() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-3">
+        <div className="mt-16 grid gap-6 md:grid-cols-3">
           {pillars.map((p, i) => (
             <div
               key={p.title}
               style={{ animationDelay: `${i * 80}ms` }}
-              className="animate-fade-up min-w-0 rounded-2xl border border-border bg-surface p-6 shadow-sm"
+              className="group relative animate-fade-up min-w-0 overflow-hidden rounded-3xl border border-border bg-surface p-7 shadow-xl shadow-blue-950/[0.06]"
             >
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-accent">
+              <span className="absolute -right-2 -top-8 text-[9rem] font-semibold leading-none text-brand/[0.04]">
+                {i + 1}
+              </span>
+              <span className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-brand/10 text-brand transition-transform group-hover:rotate-6 group-hover:scale-110">
                 <p.icon className="h-5 w-5" />
               </span>
-              <h3 className="mt-5 text-lg font-semibold">{p.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted">{p.body}</p>
+              <h3 className="relative mt-7 text-xl font-semibold">{p.title}</h3>
+              <p className="relative mt-3 text-sm leading-7 text-muted">{p.body}</p>
             </div>
           ))}
         </div>

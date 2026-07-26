@@ -38,14 +38,14 @@ export default function AdminLayout({
 
   if (!ready) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="product-page flex min-h-screen items-center justify-center bg-bg">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-brand" />
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-bg-soft/40">
+    <div className="product-page flex min-h-screen bg-bg-soft/40">
       <aside className="sticky top-0 flex h-screen w-56 shrink-0 flex-col border-r border-border bg-bg px-3 py-5">
         <Link href="/" className="flex items-center gap-2 px-2">
           <Logo className="h-7 w-7" />

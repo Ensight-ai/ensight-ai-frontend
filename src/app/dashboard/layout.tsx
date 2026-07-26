@@ -96,16 +96,21 @@ export default function DashboardLayout({
 
   if (!ready) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="product-page flex min-h-screen items-center justify-center bg-bg">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-brand" />
       </div>
     );
   }
 
   const initials = email?.[0]?.toUpperCase() ?? "?";
+  const currentPage = nav.find((item) =>
+    item.href === "/dashboard"
+      ? pathname === "/dashboard"
+      : pathname.startsWith(item.href),
+  )?.label ?? "Dashboard";
 
   return (
-    <div className="flex min-h-screen bg-bg-soft/40">
+    <div className="product-page flex min-h-screen bg-bg-soft/60">
       {/* Mobile backdrop */}
       {mobileOpen && (
         <div
@@ -117,14 +122,14 @@ export default function DashboardLayout({
 
       {/* Sidebar — fixed drawer on mobile, sticky column on desktop */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-border bg-bg px-3 py-5 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:w-60 lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-72 shrink-0 flex-col border-r border-border bg-bg px-4 py-6 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:w-64 lg:translate-x-0 ${
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between px-2">
           <Link href="/" className="flex items-center gap-2">
             <Logo className="h-7 w-7" />
-            <span className="text-lg font-semibold tracking-tight">
+            <span className="text-[17px] font-bold tracking-tight">
               EnsightLabs
             </span>
           </Link>
@@ -139,8 +144,12 @@ export default function DashboardLayout({
           </button>
         </div>
 
-        <nav className="mt-8 flex flex-1 flex-col gap-1 overflow-y-auto">
-          {nav.map((item) => {
+        <nav className="mt-10 flex flex-1 flex-col overflow-y-auto">
+          <p className="px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            Workspace
+          </p>
+          <div className="mt-3 flex flex-col gap-1">
+          {nav.slice(0, 6).map((item) => {
             const active =
               item.href === "/dashboard"
                 ? pathname === "/dashboard"
@@ -150,7 +159,7 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
-                className={`group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
                   active
                     ? "bg-brand/10 font-medium text-brand"
                     : "text-muted hover:bg-surface hover:text-fg"
@@ -168,22 +177,38 @@ export default function DashboardLayout({
               </Link>
             );
           })}
+          </div>
+          <p className="mt-8 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+            Manage
+          </p>
+          <div className="mt-3 flex flex-col gap-1">
+          {nav.slice(6).map((item) => {
+            const active = pathname.startsWith(item.href);
+            const Icon = item.icon;
+            return (
+              <Link key={item.href} href={item.href} className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${active ? "bg-brand/10 font-medium text-brand" : "text-muted hover:bg-bg-soft hover:text-fg"}`}>
+                {active && <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r-full bg-brand" />}
+                <Icon className={`h-[18px] w-[18px] transition-transform group-hover:scale-110 ${active ? "text-brand" : ""}`} />
+                {item.label}
+              </Link>
+            );
+          })}
+          </div>
         </nav>
 
-        <div className="border-t border-border pt-3">
-          <div className="flex items-center gap-2 px-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand/15 text-sm font-semibold text-brand">
+        <div className="mt-5 border-t border-border pt-4">
+          <div className="flex items-center gap-3 rounded-xl bg-bg-soft px-3 py-3">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-semibold text-white shadow-sm shadow-brand/25">
               {initials}
             </span>
-            {email && (
-              <p className="min-w-0 flex-1 truncate text-xs text-muted" title={email}>
-                {email}
-              </p>
-            )}
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-semibold text-fg">Your workspace</p>
+              {email && <p className="truncate text-[11px] text-muted" title={email}>{email}</p>}
+            </div>
           </div>
           <button
             onClick={signOut}
-            className="mt-2 w-full rounded-lg px-3 py-2 text-left text-sm text-muted transition-colors hover:bg-surface hover:text-fg"
+            className="mt-2 w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-muted transition-colors hover:bg-bg-soft hover:text-fg"
           >
             Sign out
           </button>
@@ -192,7 +217,7 @@ export default function DashboardLayout({
 
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-3 border-b border-border bg-bg/80 px-4 backdrop-blur lg:hidden">
+        <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-bg/85 px-4 backdrop-blur lg:hidden">
           <button
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
@@ -208,9 +233,19 @@ export default function DashboardLayout({
           </Link>
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
+        <header className="hidden h-16 items-center justify-between border-b border-border bg-bg/80 px-8 backdrop-blur lg:flex">
+          <div>
+            <p className="text-sm font-semibold text-fg">{currentPage}</p>
+            <p className="text-xs text-muted">Manage your AI workspace</p>
+          </div>
+          <Link href="/" className="rounded-lg border border-border bg-surface px-3 py-2 text-xs font-medium text-muted transition-colors hover:border-brand/40 hover:text-brand">
+            View website <span aria-hidden>↗</span>
+          </Link>
+        </header>
+
+        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-9">
           {/* Re-mount on route change so content animates in each navigation. */}
-          <div key={pathname} className="mx-auto max-w-4xl animate-fade-in">
+          <div key={pathname} className="mx-auto max-w-6xl animate-fade-in">
             {children}
           </div>
         </main>

@@ -140,42 +140,44 @@ const cards = [
 
 export function OutcomesShowcase() {
   return (
-    <section className="mx-auto max-w-6xl px-5 py-24">
-      <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Every conversation does more
-        </h2>
-        <p className="mt-4 text-muted">
-          Your agent doesn&apos;t just answer questions — it turns those chats
-          into qualified leads, booked meetings, and ready-to-use marketing
-          content, from the same knowledge base.
-        </p>
-      </div>
+    <section className="bg-bg-soft/60">
+      <div className="mx-auto max-w-6xl px-5 py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Every conversation does more
+          </h2>
+          <p className="mt-4 text-muted">
+            Your agent doesn&apos;t just answer questions — it turns those chats
+            into qualified leads, booked meetings, and ready-to-use marketing
+            content, from the same knowledge base.
+          </p>
+        </div>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
-        {cards.map((c) => (
-          <div
-            key={c.title}
-            className="min-w-0 rounded-2xl border border-border bg-surface/50 p-6 shadow-sm shadow-slate-200/50 sm:p-8"
-          >
-            <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-accent">
-              <c.icon className="h-5 w-5" />
-            </span>
-            <h3 className="mt-5 text-xl font-semibold">{c.title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted">{c.body}</p>
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          {cards.map((c) => (
+            <div
+              key={c.title}
+              className="min-w-0 rounded-2xl border border-border bg-surface p-6 shadow-sm shadow-slate-200/50 sm:p-8"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand/15 text-brand-accent">
+                <c.icon className="h-5 w-5" />
+              </span>
+              <h3 className="mt-5 text-xl font-semibold">{c.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted">{c.body}</p>
 
-            <ul className="mt-5 space-y-2">
-              {c.points.map((p) => (
-                <li key={p} className="flex items-center gap-2.5 text-sm">
-                  <CheckIcon className="h-4 w-4 shrink-0 text-brand-accent" />
-                  <span className="text-fg/90">{p}</span>
-                </li>
-              ))}
-            </ul>
+              <ul className="mt-5 space-y-2">
+                {c.points.map((p) => (
+                  <li key={p} className="flex items-center gap-2.5 text-sm">
+                    <CheckIcon className="h-4 w-4 shrink-0 text-brand-accent" />
+                    <span className="text-fg/90">{p}</span>
+                  </li>
+                ))}
+              </ul>
 
-            <div className="mt-7">{c.mockup}</div>
-          </div>
-        ))}
+              <div className="mt-7">{c.mockup}</div>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

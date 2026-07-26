@@ -47,7 +47,7 @@ const jsonLd = {
 
 export default function Home() {
   return (
-    <>
+    <div className="marketing-page min-h-screen bg-bg text-fg">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -65,6 +65,6 @@ export default function Home() {
         <CTA />
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

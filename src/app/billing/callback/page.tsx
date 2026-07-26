@@ -50,7 +50,7 @@ function CallbackInner() {
   }, [reference]);
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-5 text-center">
+    <div className="product-page flex min-h-screen flex-col items-center justify-center px-5 text-center">
       <Logo className="h-10 w-10" />
 
       {state === "checking" && (

@@ -61,8 +61,11 @@ const plans = [
 
 export function Pricing() {
   return (
-    <section id="pricing" className="mx-auto max-w-6xl px-5 py-24">
+    <section id="pricing" className="mx-auto max-w-7xl px-5 py-28">
       <div className="mx-auto max-w-2xl text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand">
+          Pick your power level
+        </p>
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Simple pricing that grows with you
         </h2>
@@ -72,23 +75,24 @@ export function Pricing() {
         </p>
       </div>
 
-      <div className="mt-14 grid gap-6 lg:grid-cols-3">
+      <div className="mt-16 grid items-center gap-6 lg:grid-cols-3">
         {plans.map((plan) => (
           <div
             key={plan.name}
             className={
               plan.highlighted
-                ? "relative rounded-2xl border border-brand bg-surface p-7 shadow-2xl shadow-brand/20"
-                : "relative rounded-2xl border border-border bg-surface p-7 shadow-sm shadow-slate-200/60"
+                ? "relative overflow-hidden rounded-3xl border border-blue-400/60 bg-gradient-to-b from-brand/25 to-surface p-8 shadow-[0_0_70px_rgba(37,99,235,0.2)] lg:-translate-y-5"
+                : "relative rounded-3xl border border-border bg-surface p-8 shadow-xl shadow-blue-950/[0.06]"
             }
           >
-            {plan.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand px-3 py-1 text-xs font-medium text-white">
-                Most popular
-              </span>
-            )}
-
-            <h3 className="text-lg font-semibold">{plan.name}</h3>
+            <div className="flex min-h-7 items-center justify-between gap-3">
+              <h3 className="text-lg font-semibold">{plan.name}</h3>
+              {plan.highlighted && (
+                <span className="shrink-0 rounded-full bg-brand px-3 py-1 text-xs font-medium text-white shadow-md shadow-brand/20">
+                  Most popular
+                </span>
+              )}
+            </div>
             <p className="mt-3 flex items-baseline gap-1">
               <span className="text-4xl font-semibold tracking-tight">
                 {plan.price}
