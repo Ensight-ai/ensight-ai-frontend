@@ -61,6 +61,14 @@ export function ChatWidget({
   const canVoice = capability === "voice" || capability === "both";
 
   useEffect(() => {
+    if (window.parent === window) return;
+    window.parent.postMessage(
+      { type: "ensight:widget-resize", open },
+      "*",
+    );
+  }, [open]);
+
+  useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages, sending, greetingTyping, open]);
 

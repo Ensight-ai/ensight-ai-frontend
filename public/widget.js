@@ -29,6 +29,9 @@
     if (document.querySelector('iframe[data-ensight-widget="true"]')) return;
 
     var iframe = document.createElement("iframe");
+    var closedSize = "96px";
+    var openWidth = "min(420px,100vw)";
+    var openHeight = "min(600px,100vh)";
     iframe.title = "EnsightLabs chat widget";
     iframe.setAttribute("data-ensight-widget", "true");
     iframe.setAttribute("frameborder", "0");
@@ -37,13 +40,31 @@
     iframe.style.cssText =
       "position:fixed;bottom:0;" +
       (params.get("position") === "bottom-left" ? "left:0;" : "right:0;") +
-      "width:min(420px,100vw);height:min(600px,100vh);border:0;" +
+      "width:" + closedSize + ";height:" + closedSize + ";border:0;" +
       "background:transparent;z-index:2147483647;display:block;" +
       "pointer-events:auto";
     iframe.allow = params.get("capability") === "chat"
       ? "clipboard-write"
       : "microphone; clipboard-write";
     iframe.loading = "eager";
+
+    // Keep the iframe's clickable area no larger than the launcher while the
+    // chat is closed. The widget page tells us when its panel opens/closes.
+    window.addEventListener("message", function (event) {
+      if (
+        event.origin !== host ||
+        event.source !== iframe.contentWindow ||
+        !event.data ||
+        event.data.type !== "ensight:widget-resize"
+      ) {
+        return;
+      }
+
+      var open = event.data.open === true;
+      iframe.style.width = open ? openWidth : closedSize;
+      iframe.style.height = open ? openHeight : closedSize;
+    });
+
     document.body.appendChild(iframe);
   }
 
