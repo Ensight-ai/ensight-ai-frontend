@@ -87,7 +87,7 @@ export default function AgentsPage() {
     if (agent.greeting) {
       attrs.push(`data-greeting="${escapeHtmlAttribute(agent.greeting)}"`);
     }
-    return `<script src="https://www.ensightlabs.xyz/widget.js?v=3" ${attrs.join(" ")}></script>`;
+    return `<script src="https://www.ensightlabs.xyz/widget.js?v=4" ${attrs.join(" ")}></script>`;
   }
 
   function escapeHtmlAttribute(value: string) {

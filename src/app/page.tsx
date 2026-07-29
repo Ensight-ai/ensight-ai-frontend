@@ -9,6 +9,7 @@ import { Pricing } from "@/components/pricing";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { VoiceShowcase } from "@/components/voice-showcase";
+import { GOOGLE_LIMITED_USE_STATEMENT } from "@/lib/google-compliance";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const jsonLd = {
@@ -63,6 +64,28 @@ export default function Home() {
         <HowItWorks />
         <Pricing />
         <CTA />
+        <section
+          aria-labelledby="google-limited-use-heading"
+          className="border-t border-border/60 bg-bg-soft/70"
+        >
+          <div className="mx-auto max-w-6xl px-5 py-8 text-center">
+            <h2
+              id="google-limited-use-heading"
+              className="text-sm font-bold text-fg"
+            >
+              Google API Limited Use
+            </h2>
+            <p className="mx-auto mt-2 max-w-4xl text-sm leading-6 text-fg">
+              <strong>{GOOGLE_LIMITED_USE_STATEMENT}</strong>
+            </p>
+            <a
+              href="/privacy"
+              className="mt-3 inline-flex text-sm font-semibold text-brand underline decoration-brand/40 underline-offset-4 hover:text-brand-soft"
+            >
+              Read our Privacy Policy
+            </a>
+          </div>
+        </section>
       </main>
       <SiteFooter />
     </div>

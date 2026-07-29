@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Script from "next/script";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { EnsightWidgetEmbed } from "@/components/ensight-widget-embed";
 import { Toaster } from "@/components/toaster";
 import "./globals.css";
 
@@ -81,16 +81,7 @@ export default function RootLayout({
       <body className="app-canvas min-h-full flex flex-col bg-bg text-fg">
         {children}
         <Toaster />
-        <Script
-          strategy="afterInteractive"
-          src="https://www.ensightlabs.xyz/widget.js?v=3"
-          data-agent-key="pk_LyMhessCTP5o36Z6CWw7zNKaD_p0Qvyj"
-          data-color="#2563eb"
-          data-name="Ensightlabs assistant"
-          data-position="bottom-right"
-          data-capability="both"
-          data-greeting="Hi!, this is ensight labs AI assistant, how can we help you today ?☺️☺️"
-        />
+        <EnsightWidgetEmbed />
       </body>
     </html>
   );

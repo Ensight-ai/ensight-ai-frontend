@@ -10,6 +10,7 @@ import {
   type GoogleStatus,
 } from "@/lib/api";
 import { getUser } from "@/lib/auth";
+import { GOOGLE_LIMITED_USE_STATEMENT } from "@/lib/google-compliance";
 import { toast } from "@/components/toaster";
 import { PageHeader } from "@/components/dashboard/page-header";
 
@@ -152,6 +153,20 @@ function SettingsInner() {
               {busy ? "Redirecting…" : "Connect Google Calendar"}
             </button>
           )}
+        </div>
+
+        <div
+          role="note"
+          className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950"
+        >
+          <p className="font-semibold">Google API Limited Use</p>
+          <p className="mt-1 leading-6">{GOOGLE_LIMITED_USE_STATEMENT}</p>
+          <a
+            href="/privacy"
+            className="mt-2 inline-flex font-medium text-amber-900 underline decoration-amber-400 underline-offset-4 hover:text-amber-700"
+          >
+            Read our Privacy Policy
+          </a>
         </div>
       </section>
 
