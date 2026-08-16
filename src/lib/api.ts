@@ -228,6 +228,14 @@ export interface ConversationSummary {
   language: string | null;
   started_at: string;
   last_message_at: string | null;
+  ended_at: string | null;
+  lead_processing_status:
+    | "active"
+    | "pending"
+    | "processing"
+    | "completed"
+    | "failed";
+  lead_qualified_at: string | null;
   message_count: number;
 }
 
@@ -567,6 +575,20 @@ export async function startWidgetSession(
     public_key: publicKey,
     visitor_id: visitorId ?? null,
   });
+}
+
+/** End a visitor session and queue its conversation for lead qualification. */
+export async function endWidgetSession(
+  sessionToken: string,
+  keepalive = false,
+): Promise<void> {
+  const res = await fetch(`${API_URL}/sessions/end`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${sessionToken}` },
+    keepalive,
+  });
+  if (res.status === 401) throw new AuthError("Session expired");
+  if (!res.ok) throw new Error(await readError(res));
 }
 
 export async function widgetChat(

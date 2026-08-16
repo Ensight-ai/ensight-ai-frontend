@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AuthError,
+  endWidgetSession,
   startWidgetSession,
   widgetChat,
   widgetVoice,
@@ -21,6 +22,10 @@ interface Message {
 const DEFAULT_GREETING = "Hi! 👋 How can we help you today?";
 // How long the "typing…" preloader shows before the greeting appears on open.
 const GREETING_DELAY_MS = 700;
+// A visitor who leaves the widget open without responding has ended the chat
+// in practice. This fallback covers sessions where no close/pagehide event is
+// delivered (for example, a suspended mobile tab).
+const CONVERSATION_IDLE_MS = 2 * 60 * 1000;
 
 function visitorKey(publicKey: string) {
   return `ensight_visitor_${publicKey}`;
@@ -47,18 +52,26 @@ export function ChatWidget({
   const [messages, setMessages] = useState<Message[]>([]);
   // Show a brief "typing…" preloader, then the greeting, the first time the
   // widget is opened — so it feels like a person starting the conversation.
-  const [greeted, setGreeted] = useState(false);
   const [greetingTyping, setGreetingTyping] = useState(false);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [recording, setRecording] = useState(false);
+  const [conversationEnded, setConversationEnded] = useState(false);
+  const [ending, setEnding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const sessionRef = useRef<WidgetSession | null>(null);
+  const greetedRef = useRef(false);
 
   const canChat = capability === "chat" || capability === "both";
   const canVoice = capability === "voice" || capability === "both";
+  const hasVisitorMessage = messages.some((message) => message.role === "user");
+
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
 
   useEffect(() => {
     if (window.parent === window) return;
@@ -74,15 +87,21 @@ export function ChatWidget({
 
   // First open: play the typing preloader, then reveal the greeting.
   useEffect(() => {
-    if (!open || greeted) return;
-    setGreeted(true);
-    setGreetingTyping(true);
-    const timer = setTimeout(() => {
+    if (!open || greetedRef.current) return;
+    greetedRef.current = true;
+    let delivered = false;
+    const typingTimer = window.setTimeout(() => setGreetingTyping(true), 0);
+    const greetingTimer = window.setTimeout(() => {
+      delivered = true;
       setMessages((m) => [{ role: "bot", text: greetingText }, ...m]);
       setGreetingTyping(false);
     }, GREETING_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, [open, greeted, greetingText]);
+    return () => {
+      window.clearTimeout(typingTimer);
+      window.clearTimeout(greetingTimer);
+      if (!delivered) greetedRef.current = false;
+    };
+  }, [open, greetingText]);
 
   async function ensureSession(): Promise<WidgetSession> {
     if (session) return session;
@@ -95,6 +114,7 @@ export function ChatWidget({
       localStorage.setItem(visitorKey(publicKey), s.visitor_id);
     }
     setSession(s);
+    sessionRef.current = s;
     return s;
   }
 
@@ -109,15 +129,100 @@ export function ChatWidget({
     } catch (e) {
       if (e instanceof AuthError) {
         setSession(null);
+        sessionRef.current = null;
         s = await startWidgetSession(
           publicKey,
           localStorage.getItem(visitorKey(publicKey)),
         );
         setSession(s);
+        sessionRef.current = s;
         return fn(s.access_token);
       }
       throw e;
     }
+  }
+
+  const finishConversation = useCallback(async (showConfirmation = true) => {
+    const activeSession = sessionRef.current;
+    if (!activeSession) return;
+
+    // Detach immediately so another message cannot be added while the server
+    // is finalizing this transcript.
+    sessionRef.current = null;
+    setSession(null);
+    setConversationEnded(true);
+    setEnding(true);
+    setError(null);
+    try {
+      await endWidgetSession(activeSession.access_token);
+    } catch (e) {
+      // Keep the token available for a retry when the widget is still open.
+      sessionRef.current = activeSession;
+      setSession(activeSession);
+      setConversationEnded(false);
+      if (showConfirmation) {
+        setError(e instanceof Error ? e.message : "Couldn't end the chat.");
+      }
+    } finally {
+      setEnding(false);
+    }
+  }, []);
+
+  // Finalize automatically after the conversation goes quiet.
+  useEffect(() => {
+    if (!session || !hasVisitorMessage || sending || conversationEnded) return;
+    const timer = window.setTimeout(
+      () => void finishConversation(true),
+      CONVERSATION_IDLE_MS,
+    );
+    return () => window.clearTimeout(timer);
+  }, [
+    conversationEnded,
+    finishConversation,
+    hasVisitorMessage,
+    messages,
+    sending,
+    session,
+  ]);
+
+  // Best-effort finalization when the visitor navigates away. keepalive lets
+  // the browser finish the small request while unloading the iframe.
+  useEffect(() => {
+    const onPageHide = () => {
+      const activeSession = sessionRef.current;
+      if (activeSession) {
+        void endWidgetSession(activeSession.access_token, true).catch(() => {});
+      }
+    };
+    window.addEventListener("pagehide", onPageHide);
+    return () => window.removeEventListener("pagehide", onPageHide);
+  }, []);
+
+  function resetConversation() {
+    sessionRef.current = null;
+    setSession(null);
+    setMessages([]);
+    setInput("");
+    setError(null);
+    setConversationEnded(false);
+    greetedRef.current = false;
+    setGreetingTyping(false);
+  }
+
+  function closeWidget() {
+    setOpen(false);
+    if (sessionRef.current && hasVisitorMessage && !sending) {
+      void finishConversation(false);
+    }
+  }
+
+  function toggleWidget() {
+    if (open) {
+      closeWidget();
+      return;
+    }
+    if (conversationEnded) resetConversation();
+    setOpen(true);
   }
 
   function playAudio(dataUrl: string) {
@@ -218,15 +323,26 @@ export function ChatWidget({
               <span className="flex h-2 w-2 rounded-full bg-emerald-300" />
               <p className="text-sm font-semibold">{name}</p>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="text-white/80 transition-colors hover:text-white"
-            >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M6 6l12 12M18 6 6 18" />
-              </svg>
-            </button>
+            <div className="flex items-center gap-3">
+              {hasVisitorMessage && !conversationEnded && (
+                <button
+                  onClick={() => void finishConversation(true)}
+                  disabled={sending || ending}
+                  className="text-xs font-medium text-white/80 transition-colors hover:text-white disabled:opacity-50"
+                >
+                  {ending ? "Ending…" : "End chat"}
+                </button>
+              )}
+              <button
+                onClick={closeWidget}
+                aria-label="Close chat"
+                className="text-white/80 transition-colors hover:text-white"
+              >
+                <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M6 6l12 12M18 6 6 18" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* messages */}
@@ -269,6 +385,22 @@ export function ChatWidget({
           </div>
 
           {/* input */}
+          {conversationEnded ? (
+            <div className="border-t border-slate-200 bg-white px-4 py-3 text-center">
+              <p className="text-sm font-medium text-slate-700">
+                {ending ? "Ending conversation…" : "Conversation ended"}
+              </p>
+              {!ending && (
+                <button
+                  onClick={resetConversation}
+                  className="mt-1 text-xs font-medium hover:underline"
+                  style={{ color }}
+                >
+                  Start a new chat
+                </button>
+              )}
+            </div>
+          ) : (
           <div className="flex items-center gap-2 border-t border-slate-200 bg-white px-3 py-3">
             {canChat && (
               <input
@@ -320,12 +452,13 @@ export function ChatWidget({
               </button>
             )}
           </div>
+          )}
         </div>
       )}
 
       {/* launcher bubble */}
       <button
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggleWidget}
         aria-label={open ? "Close chat" : "Open chat"}
         className="flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-105"
         style={{ backgroundColor: color }}

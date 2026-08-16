@@ -104,9 +104,30 @@ export default function ConversationsPage() {
                 className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-bg-soft/50"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-medium">
-                    Visitor {c.visitor_id.slice(0, 12)}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="truncate text-sm font-medium">
+                      Visitor {c.visitor_id.slice(0, 12)}
+                    </p>
+                    <span
+                      className={
+                        c.ended_at
+                          ? "rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600"
+                          : "rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-700"
+                      }
+                    >
+                      {c.ended_at ? "Ended" : "Active"}
+                    </span>
+                    {c.lead_processing_status === "completed" && (
+                      <span className="rounded-full bg-brand/10 px-2 py-0.5 text-[10px] font-medium text-brand">
+                        Lead reviewed
+                      </span>
+                    )}
+                    {c.lead_processing_status === "failed" && (
+                      <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-medium text-red-700">
+                        Review failed
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-muted">
                     {new Date(c.started_at).toLocaleString()} · {c.channel}
                     {c.language ? ` · ${c.language}` : ""}
